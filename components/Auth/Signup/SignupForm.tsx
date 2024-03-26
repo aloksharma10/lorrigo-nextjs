@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { useRef } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import SubmitButton from "../SubmitButton";
-
+  
 const SignupForm = () => {
   const formRef = useRef<HTMLFormElement>();
   const { handleUserSignup, loading } = useAuth()
@@ -39,15 +39,6 @@ const SignupForm = () => {
             name="password"
             type="password"
             placeholder="******"
-          />
-        </div>
-        <div className="flex flex-col space-y-1.5">
-          <Label htmlFor="phone">Phone</Label>
-          <Input
-            id="phone"
-            name="phone"
-            type="phone"
-            placeholder="Enter Your Phone No."
           />
         </div>
         <SubmitButton title={"Signup"} />

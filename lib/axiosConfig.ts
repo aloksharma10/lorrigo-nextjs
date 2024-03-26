@@ -1,0 +1,19 @@
+import { cookies } from 'next/headers';
+import axios, { AxiosInstance } from 'axios';
+
+const BASEURL = process.env.BACKEND_API_URL || 'http://localhost:4000';
+
+const cookieStore = cookies();
+const userCookie = cookieStore.get('user');
+const user = userCookie ? JSON.parse(userCookie.value) : { token: null };
+
+const axiosConfig = {
+    baseURL: BASEURL,
+    timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json',
+        ...(user.token && { 'Authorization': `Bearer ${user.token}` }), 
+    },
+};
+
+export const axiosIWAuth: AxiosInstance = axios.create(axiosConfig);

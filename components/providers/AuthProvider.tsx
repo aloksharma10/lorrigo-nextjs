@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 
@@ -8,6 +8,7 @@ import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { AuthType } from "@/types/types";
 
 import { useToast } from "@/components/ui/use-toast";
+
 
 interface AuthContextType {
     user: AuthType | null;
@@ -24,46 +25,58 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter()
 
     const [user, setUser] = useState<AuthType | null>(null);
+    const [userToken, setUserToken] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("userCookies", user)
         const userC = getCookie('user')
-        console.log("userCookies", userC)
+        if (userC) {
+            setUserToken(JSON.parse(userC));
+        }
 
-        // if (session?.user) {
-        //   setUser(session.user);
-        // }
     }, [user]);
+
+    const axiosConfig = {
+        baseURL: 'http://localhost:4000',
+        timeout: 5000,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    const axiosWOAuth: AxiosInstance = axios.create({
+        ...axiosConfig,
+        headers: {
+            ...axiosConfig.headers,
+            'Authorization': '',
+        },
+    });
+
 
     const handleUserSignup = async (formData: FormData) => {
         try {
             const name = formData.get("name")?.toString() || "";
-            const role = formData.get("role")?.toString() || "";
             const email = formData.get("email")?.toString() || "";
-            const phone = formData.get("phone")?.toString() || "";
             const password = formData.get("password")?.toString() || "";
 
-            if (!name || name.toString().length <= 2 || !role || !email || !email.toString().includes("@") || !phone || !password) {
+            if (!name || name.toString().length <= 2 || !email || !email.toString().includes("@") || !password) {
                 return toast({
                     variant: "destructive",
                     title: "Signup Error",
                     description: "Please enter valid details for all fields.",
                 });
             }
-
-            // Construct user data object
+            
             const userData = {
                 name,
-                role,
                 email,
-                phone,
                 password
             };
 
-            const response = await axios.post("http://localhost:4000/auth/signup", userData);
+            const response = await axiosWOAuth.post("/auth/signup", userData)
 
             if (response.data.user) {
+                setLoading(true);
                 return toast({
                     title: "Success",
                     description: "Signup successfully.",
@@ -101,7 +114,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                 password: password,
             };
 
-            const userRes = await axios.post("http://localhost:4000/auth/login", userCred);
+            const userRes = await axiosWOAuth.post("/auth/login", userCred);
             const userData = userRes.data;
 
             if (userData.user && userData.valid) {

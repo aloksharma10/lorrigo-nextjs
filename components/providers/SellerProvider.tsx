@@ -1,34 +1,53 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useToast } from "@/components/ui/use-toast";
 
 // import { differenceInMonths } from "date-fns";
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { SellerType } from "@/types/types";
-
-interface SellerProviderProps {
-  children: React.ReactNode;
-}
+import { getCookie } from "cookies-next";
 
 interface SellerContextType {
-  user: SellerType | null;
+  seller: SellerType | null;
 }
 // Add type assertion to createContext
 const SellerContext = createContext<SellerContextType | null>(null);
 
 function SellerProvider({ children }: { children: React.ReactNode }) {
-  const { toast } = useToast();
+  const [seller, setSeller] = useState<SellerType | null>(null);
+  const [userToken, setUserToken] = useState<string>("");
 
-  const [user, setUser] = useState<SellerType | null>(null);
+  const { toast } = useToast();
+  const router = useRouter()
+
+  useEffect(() => {
+    const userC = getCookie('user')
+    if (userC) {
+      setUserToken(JSON.parse(userC));
+    }
+
+  }, [userToken]);
+
+  const axiosConfig = {
+    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000',
+    timeout: 5000,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(userToken && { 'Authorization': `Bearer ${userToken}` }),
+    },
+  };
+
+  const axiosIWAuth: AxiosInstance = axios.create(axiosConfig);
+
 
 
   return (
     <SellerContext.Provider
       value={{
-        user
+        seller
       }}
     >
       {children}
