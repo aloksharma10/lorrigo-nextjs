@@ -1,13 +1,14 @@
 "use client";
 
 import { Nav } from "./nav";
-import { Archive, ArchiveX, Banknote, Database, File, Headset, Home, Inbox, Send, Settings, ShoppingCart, Trash2, TrendingUpIcon } from "lucide-react";
+import { Home, Settings, ShoppingCart, TrendingUpIcon } from "lucide-react";
 import { TopNav } from "./top-nav";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 
-export function NavigationBar() {
-    const [isNavCollapsed, setIsNavCollapsed] = useState<boolean>(false)
+export function NavigationBar({ children }: { children: React.ReactNode }) {
+    const [isNavCollapsed, setIsNavCollapsed] = useState<boolean>(true)
     const handleMouseEnter = () => {
         setIsNavCollapsed(false); // Expand when mouse enters
     };
@@ -21,10 +22,10 @@ export function NavigationBar() {
                 <TopNav />
             </div>
             <div
-                className={`fixed top-16 pt-2 shadow-md h-full transition-all duration-500 ${
-                    isNavCollapsed ? '' : ''
-                }`}
-                onMouseEnter={handleMouseEnter} 
+                className={cn("fixed top-16 mt-2 shadow-md h-full flex flex-col transition-all duration-300 ease-in-out bg-gray-800 items-center text-white",
+                    isNavCollapsed ? 'w-16' : ' w-64'
+                )}
+                onClick={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
                 <Nav
@@ -32,30 +33,34 @@ export function NavigationBar() {
                     links={[
                         {
                             title: "Home",
-                            label: "128",
                             icon: Home,
-                            variant: "default",
+                            variant: "themeNavActiveBtn",
                         },
                         {
                             title: "Dashboard",
-                            label: "9",
                             icon: TrendingUpIcon,
-                            variant: "ghost",
+                            variant: "themeNavBtn",
                         },
                         {
                             title: "Your Orders",
-                            label: "",
                             icon: ShoppingCart,
                             variant: "ghost",
                         },
                         {
                             title: "Setting",
-                            label: "",
                             icon: Settings,
                             variant: "ghost",
                         },
                     ]}
                 />
+            </div>
+            <div
+                className={cn(
+                    "container transition-all duration-300 ease-in-out",
+                    isNavCollapsed ? "pl-14" : "pl-64"
+                )}
+            >
+                {children}
             </div>
         </div>
     );

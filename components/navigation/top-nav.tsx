@@ -21,7 +21,7 @@ export function TopNav() {
         <div
             className="group flex flex-col gap-4 py-2"
         >
-            <nav className="flex justify-between gap-1 px-4 min-w-full p-2">
+            <nav className="flex justify-between gap-1 px-5 min-w-full p-2">
                 <div className="flex space-x-4 cursor-pointer items-center">
                     <span className="text-lg font-bold"><Menu size={24} /></span>
                     <Image src="/assets/logogosog.png" alt="logo" width={130} height={130} />
