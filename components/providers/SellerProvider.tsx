@@ -73,14 +73,6 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
   const axiosIWAuth: AxiosInstance = axios.create(axiosConfig);
 
-  useEffect(() => {
-    axiosIWAuth.get('/hub').then((res) => {
-      if (res.data?.valid) {
-        setSellerFacilities(res.data.hubs);
-      }
-    }).catch((err) => { });
-  }, [userToken]);
-
   const handlebusinessDropdown = (value: string) => {
     setbusiness(value);
   }

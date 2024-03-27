@@ -58,7 +58,7 @@ export const formDataSchema = z.object({
 });
 
 
-export const B2CForm = () => {
+export const B2CForm = ({ sellerFacilities }: { sellerFacilities: any }) => {
     const { sellerCustomerForm } = useSellerProvider();
 
     const [collectableFeild, setCollectableFeild] = useState(false);
@@ -150,12 +150,14 @@ export const B2CForm = () => {
                             <Button variant={'secondary'} type='button' onClick={() => form.reset()}>Reset</Button>
                         </CardFooter>
                     </Card>
+
                     <div className='space-y-3'>
                         <Card>
                             <CardHeader>
                                 <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Delivery status</CardTitle>
                             </CardHeader>
                             <DeliveryDetailsForm
+                                sellerFacilities={sellerFacilities}
                                 form={form}
                                 isLoading={isLoading}
                             />

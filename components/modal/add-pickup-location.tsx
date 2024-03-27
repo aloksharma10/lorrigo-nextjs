@@ -27,6 +27,8 @@ import { useModal } from "@/hooks/use-model-store";
 import { Checkbox } from '../ui/checkbox';
 import { PhoneInput } from '../ui/phone-input';
 import { useSellerProvider } from '../providers/SellerProvider';
+import { useHubProvider } from '../providers/HubProvider';
+import { HubType } from '@/types/types';
 
 export const pickupAddressFormSchema = z.object({
     facilityName: z.string().min(1, "Facility name is required"),
@@ -47,7 +49,8 @@ export const pickupAddressFormSchema = z.object({
 
 
 export const AddPickupLocationModal = () => {
-    const { setSellerCustomerForm, sellerCustomerForm } = useSellerProvider();
+    const { handleCreateHub } = useHubProvider();
+    // const { setSellerCustomerForm, sellerCustomerForm } = useSellerProvider();
     const { isOpen, onClose, type } = useModal();
     const router = useRouter();
 
@@ -78,6 +81,16 @@ export const AddPickupLocationModal = () => {
 
     const onSubmit = async (values: z.infer<typeof pickupAddressFormSchema>) => {
         try {
+
+            handleCreateHub({
+                name: values.facilityName,
+                pincode: values.pincode,
+                address1: values.address,
+                address2: values.address,
+                phone: values.pickupLocContact,
+                city: values.city,
+                state: values.state
+            });
 
             form.reset();
             router.refresh();
@@ -184,13 +197,13 @@ export const AddPickupLocationModal = () => {
                                     </FormItem>
                                 )}
                             />
-                             <FormField
+                            <FormField
                                 control={form.control}
                                 name="address"
                                 render={({ field }) => (
                                     <FormItem className='col-span-2'>
                                         <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                        Address Line
+                                            Address Line
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -201,6 +214,87 @@ export const AddPickupLocationModal = () => {
                                             />
                                         </FormControl>
                                         <FormDescription>This will be used in the invoices that you will print.</FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            City
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter the city"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="pincode"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            Pincode
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter the pincode"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="state"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            State
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter the state"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="country"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            Country
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter the country"
+                                                {...field}
+                                            />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -252,7 +346,7 @@ export const AddPickupLocationModal = () => {
                                                 </FormItem>
                                             )}
                                         />
-                                       
+
                                         <FormField
                                             control={form.control}
                                             name="rtoCity"

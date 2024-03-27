@@ -4,17 +4,18 @@ import { CardContent } from "../ui/card";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "../ui/select";
 
-import { useSellerProvider } from "../providers/SellerProvider";
+// import { useSellerProvider } from "../providers/SellerProvider";
 import { Button } from "../ui/button";
 import { useModal } from "@/hooks/use-model-store";
 
 interface DeliveryDetailsFormProps {
     form: any;
+    sellerFacilities: any;
     isLoading: boolean;
 }
 
-export const DeliveryDetailsForm = ({ form, isLoading }: DeliveryDetailsFormProps) => {
-    const { sellerFacilities } = useSellerProvider();
+export const DeliveryDetailsForm = ({ form, isLoading, sellerFacilities }: DeliveryDetailsFormProps) => {
+    // const { sellerFacilities } = useSellerProvider();
 
     const { onOpen } = useModal();
     return (

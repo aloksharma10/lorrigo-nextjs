@@ -62,13 +62,13 @@ export interface B2COrderType {
 }
 
 export interface HubType {
-    id: string;
+    id?: string;
     hub_id?: number;
-    sellerId: string;
+    sellerId?: string;
     message?: string;
     code?: number;
     isSuccess?: boolean;
-    hub_details: {
+    hub_details?: {
         name: string;
         pincode: number;
         city: string;
