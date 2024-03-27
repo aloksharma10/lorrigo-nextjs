@@ -149,7 +149,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                 className: "bg-black text-white",
                 title: "Success",
                 description: "Logout successfully!",
-            });
+            })
+            router.push("/login");
         } catch (error) {
             console.log("error", error);
             toast({
@@ -157,7 +158,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
                 title: "Something went wrong!",
             });
         }
-    }, [toast]);
+    }, [router, toast]);
 
 
     return (

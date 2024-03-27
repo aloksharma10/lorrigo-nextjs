@@ -18,6 +18,7 @@ const buttonVariants = cva(
           "bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
         ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
+        webPageBtn: "bg-[#f6e1df] text-red-600 hover:text-white font-bold hover:bg-[#f04d5a] dark:bg-[#f6e1df] dark:text-white dark:hover:bg-[#f04d5a]",
         themeButton: "bg-[#be0c34] text-white hover:bg-[#f04d5a] dark:bg-[#be0c34] dark:text-white dark:hover:bg-[#f04d5a]",
         themeNavActiveBtn: "bg-[#be0c34] text-white hover:bg-[#f04d5a] dark:bg-[#be0c34] dark:text-white dark:hover:bg-[#f04d5a]",
         themeNavBtn: "hover:bg-[#f04d5a] hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",

@@ -13,15 +13,13 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/providers/AuthProvider";
 import SubmitButton from "../SubmitButton";
 import { buttonVariants } from "@/components/ui/button";
+import Image from "next/image";
 const LoginForm = () => {
   const { handleUserLogin } = useAuth();
   return (
     <Card>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl text-center">Welcome Back!</CardTitle>
-        <CardDescription className="text-center">
-          Enter your email and password to login
-        </CardDescription>
+      <CardTitle className="text-2xl mx-auto"><Image src={'/assets/logogosog.png'} width={130} height={130} alt="logo" /></CardTitle>
       </CardHeader>
       <CardContent>
         <form action={handleUserLogin}>

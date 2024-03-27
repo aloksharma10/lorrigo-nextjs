@@ -12,20 +12,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Image from "next/image";
 
 function Signup() {
   return (
-    <div className="relative h-[800px] flex-col items-center justify-center max-w-lg mx-auto lg:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-
+    <div className="relative h-[800px] flex-col items-center justify-center max-w-lg mx-auto w-1/2">
 
       <div className="lg:p-2 relative">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg shadow-xl rounded-md bg-white">
           <Card>
             <CardHeader className="space-y-1 w-full">
-              <CardTitle className="text-2xl text-center">Welcome!</CardTitle>
-              <CardDescription className="text-center">
-                Lorrigo
-              </CardDescription>
+              <CardTitle className="text-2xl mx-auto"><Image src={'/assets/logogosog.png'} width={130} height={130} alt="logo" /></CardTitle>
+
             </CardHeader>
             <CardContent>
               <SignupForm />
@@ -42,12 +40,12 @@ function Signup() {
           </Card>
         </div>
       </div>
-      <AuthSideContainer
+      {/* <AuthSideContainer
         title="Signup"
         desc="This library has saved me countless hours of work and
           helped me deliver stunning designs to my clients faster than
           ever before."
-      />
+      /> */}
     </div>
   );
 }

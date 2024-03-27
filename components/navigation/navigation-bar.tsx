@@ -14,15 +14,17 @@ export function NavigationBar({ children }: { children: React.ReactNode }) {
     };
 
     const handleMouseLeave = () => {
-        setIsNavCollapsed(true); // Collapse when mouse leaves
+        setIsNavCollapsed(true);
     };
+
+
     return (
         <div className="w-full">
-            <div className="fixed shadow-md w-full">
+            <div className="fixed shadow-md w-full bg-white">
                 <TopNav />
             </div>
             <div
-                className={cn("fixed top-16 mt-2 shadow-md h-full flex flex-col transition-all duration-300 ease-in-out bg-gray-800 items-center text-white",
+                className={cn("z-10 fixed top-16 mt-2 shadow-md h-full flex flex-col transition-all duration-300 ease-in-out bg-gray-800 items-center text-white",
                     isNavCollapsed ? 'w-16' : ' w-64'
                 )}
                 onClick={handleMouseEnter}
@@ -34,29 +36,29 @@ export function NavigationBar({ children }: { children: React.ReactNode }) {
                         {
                             title: "Home",
                             icon: Home,
-                            variant: "themeNavActiveBtn",
+                            href: "/dashboard",
                         },
                         {
-                            title: "Dashboard",
+                            title: "Dashboard Orders",
                             icon: TrendingUpIcon,
-                            variant: "themeNavBtn",
+                            href: "/dashboard/orders",
                         },
                         {
                             title: "Your Orders",
                             icon: ShoppingCart,
-                            variant: "ghost",
+                            href: "/orders",
                         },
                         {
                             title: "Setting",
                             icon: Settings,
-                            variant: "ghost",
+                            href: "/settings",
                         },
                     ]}
                 />
             </div>
             <div
                 className={cn(
-                    "container transition-all duration-300 ease-in-out",
+                    "container transition-all duration-300 ease-in-out pt-20 space-y-3",
                     isNavCollapsed ? "pl-14" : "pl-64"
                 )}
             >

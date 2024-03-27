@@ -1,0 +1,367 @@
+import { format } from 'date-fns';
+import { CalendarIcon, Equal, Minus, Plus } from 'lucide-react';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
+import { Separator } from '../ui/separator';
+import { Button } from '../ui/button';
+import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { cn } from '@/lib/utils';
+import { Calendar } from '../ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+
+interface OrderDetailFormProps {
+    form: any;
+    isLoading: boolean;
+    handleIncrement: () => void;
+    handleDecrement: () => void;
+    collectableFeild: boolean;
+}
+
+export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrement, collectableFeild }: OrderDetailFormProps) => {
+    const currentDate = new Date();
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    return (
+
+        <CardContent className='space-y-6'>
+            <FormField
+                control={form.control}
+                name="order_reference_id"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel
+                            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                        >
+                            Order ID/Reference Number
+                        </FormLabel>
+                        <FormControl>
+                            <Input
+                                disabled={isLoading}
+                                className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                placeholder="Enter the order reference ID"
+                                {...field}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <Separator orientation='horizontal' />
+            <div className='grid grid-cols-2 gap-3 items-center'>
+                <FormField
+                    control={form.control}
+                    name="productDetails.name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Product Name
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the product name"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div className='flex items-end'>
+                    <Button type='button' size={"icon"} variant={'ghost'} onClick={handleDecrement}><Minus size={18} /></Button>
+                    <FormField
+                        control={form.control}
+                        name="productDetails.quantity"
+                        render={({ field }) => (
+                            <FormItem className='w-full'>
+                                <FormLabel
+                                    className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                                >
+                                    Item Count
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        disabled={isLoading}
+                                        className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                        placeholder="Enter the quantity of items"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type='button' size={"icon"} variant={'ghost'} onClick={handleIncrement}><Plus size={18} /></Button>
+                </div>
+
+                <FormField
+                    control={form.control}
+                    name="productDetails.category"
+                    render={({ field }) => (
+                        <FormItem className='w-full'>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Product Category
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the product category"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="productDetails.hsn_code"
+                    render={({ field }) => (
+                        <FormItem className='pt-2'>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                <div className='flex justify-between'>HSN Code <span>Optional</span></div>
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the HSN code"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+
+            <div className='grid grid-cols-5 items-center justify-items-center'>
+                <FormField
+                    control={form.control}
+                    name="productDetails.taxableValue"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Shipment Value
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the shipment value"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Plus size={18} className='mt-7' />
+                <FormField
+                    control={form.control}
+                    name="productDetails.taxRate"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Tax Rate
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the tax rate"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Equal size={18} className='mt-7' />
+                <FormField
+                    control={form.control}
+                    name="productDetails.taxableValue"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Total Value
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the total value"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div className="flex items-center space-x-2">
+                <Checkbox id="fragile_items" />
+                <Label htmlFor="fragile_items">My shipment contains fragile items.</Label>
+            </div>
+            <Separator orientation='horizontal' />
+            <div className='grid grid-cols-2 gap-3'>
+                <FormField
+                    control={form.control}
+                    name="order_invoice_number"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                <p className='flex justify-between'>
+                                    Invoice Number
+                                    <span className='text-xs'>Optional</span>
+                                </p>
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={isLoading}
+                                    className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                    placeholder="Enter the invoice number"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="order_invoice_date"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col w-full">
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                <p className='flex justify-between'>
+                                    Invoice Date
+                                    <span className='text-xs'>Optional</span>
+                                </p>
+                            </FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                "w-full pl-3 text-left font-normal bg-zinc-200/50",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value ? (
+                                                format(field.value, "PPP")
+                                            ) : (
+                                                <span>Pick a date</span>
+                                            )}
+                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="end">
+                                    <Calendar
+                                        mode="single"
+                                        onSelect={field.onChange}
+                                        disabled={(date) =>
+                                            date <= yesterday
+                                        }
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="payment_mode"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                            >
+                                Payment Mode
+                            </FormLabel>
+                            <Select
+                                disabled={isLoading}
+                                onValueChange={field.onChange}
+                            >
+                                <FormControl>
+                                    <SelectTrigger
+                                        className="bg-zinc-300/50 dark:bg-zinc-700 dark:text-white border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none"
+                                    >
+                                        <SelectValue placeholder="Select a payment mode" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value={"COD"}>Cash on Delivery</SelectItem>
+                                    <SelectItem value={"Prepaid"}>Prepaid</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                {
+                    collectableFeild && (
+                        <FormField
+                            control={form.control}
+                            name="amount2Collect"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel
+                                        className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                                    >
+                                        Collectable Amount
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={isLoading}
+                                            className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                            placeholder="Enter the amount to collect"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )
+                }
+
+            </div>
+            <Button type='submit'>Submit</Button>
+        </CardContent>
+
+    )
+}

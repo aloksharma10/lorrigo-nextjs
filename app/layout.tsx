@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 
 import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/components/providers/AuthProvider";
+import { ModalProvider } from "@/components/providers/ModalProvider";
+import SellerProvider from "@/components/providers/SellerProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +22,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <AuthProvider>
+        <AuthProvider>
+          <SellerProvider>
             <Toaster />
-            {children}
-          </AuthProvider>
+            <ModalProvider />
+            <div className="hidden lg:block">
+              {children}
+            </div>
+            <div className="lg:hidden flex text-center items-center h-full ">
+              <p>The webpage will only be displayed on large devices</p>
+            </div>
+          </SellerProvider>
+        </AuthProvider>
       </body>
     </html>
   );
