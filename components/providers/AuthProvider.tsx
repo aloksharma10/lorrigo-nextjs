@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface AuthContextType {
     user: AuthType | null;
+    userToken: string;
     loading: boolean;
     handleUserSignup: (formData: FormData) => void;
     handleUserLogin: (formData: FormData) => void;
@@ -31,7 +32,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const userC = getCookie('user')
         if (userC) {
-            setUserToken(JSON.parse(userC));
+            console.log("userC", userC);
+            setUserToken(JSON.parse(userC).token);
         }
 
     }, [user]);
@@ -48,7 +50,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         ...axiosConfig,
         headers: {
             ...axiosConfig.headers,
-            'Authorization': '',
         },
     });
 
@@ -165,6 +166,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         <AuthContext.Provider
             value={{
                 user,
+                userToken,
                 loading,
                 handleUserSignup,
                 handleUserLogin,

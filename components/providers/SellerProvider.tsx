@@ -1,32 +1,32 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useToast } from "@/components/ui/use-toast";
 
-// import { differenceInMonths } from "date-fns";
 import axios, { AxiosInstance } from "axios";
 import { SellerType } from "@/types/types";
-import { getCookie } from "cookies-next";
+import { useAuth } from "./AuthProvider";
 
 interface SellerContextType {
   seller: SellerType | null;
   business: string;
   handlebusinessDropdown: (value: string) => void;
+  sellerFacilities: any;
 }
-// Add type assertion to createContext
+
 const SellerContext = createContext<SellerContextType | null>(null);
 
 function SellerProvider({ children }: { children: React.ReactNode }) {
-  const [seller, setSeller] = useState<SellerType | null>(null);
-  const [userToken, setUserToken] = useState<string>("");
+  const { userToken } = useAuth();
 
+  const [seller, setSeller] = useState<SellerType | null>(null);
+  const [sellerFacilities, setSellerFacilities] = useState([]);
   const [business, setbusiness] = useState<string>("B2C");
 
   const { toast } = useToast();
   const router = useRouter()
-
 
   const axiosConfig = {
     baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000',
@@ -42,7 +42,20 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const handlebusinessDropdown = (value: string) => {
     setbusiness(value);
   }
+  const getSellerFacilities = useCallback(async () => {
+    try {
+      const response = await axiosIWAuth.get('/hub');
+      setSellerFacilities(response.data.hubs) ;
+    } catch (error) {
+      console.error(error);
+    }
+  },[axiosIWAuth])
+ 
+  
 
+  useEffect(() => {
+    getSellerFacilities();
+  }, [seller]);
 
   return (
     <SellerContext.Provider
@@ -50,6 +63,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         seller,
         business,
         handlebusinessDropdown,
+        sellerFacilities
 
       }}
     >

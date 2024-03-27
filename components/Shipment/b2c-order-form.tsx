@@ -11,12 +11,7 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '../ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import {
-    Card,
     CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 
 interface OrderDetailFormProps {
@@ -58,7 +53,8 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                 )}
             />
             <Separator orientation='horizontal' />
-            <div className='grid grid-cols-2 gap-3 items-center'>
+
+            <div className='grid grid-cols-2 gap-5'>
                 <FormField
                     control={form.control}
                     name="productDetails.name"
@@ -81,8 +77,7 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                         </FormItem>
                     )}
                 />
-                <div className='flex items-end'>
-                    <Button type='button' size={"icon"} variant={'ghost'} onClick={handleDecrement}><Minus size={18} /></Button>
+                <div className='flex'>
                     <FormField
                         control={form.control}
                         name="productDetails.quantity"
@@ -94,20 +89,22 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                                     Item Count
                                 </FormLabel>
                                 <FormControl>
-                                    <Input
-                                        disabled={isLoading}
-                                        className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                        placeholder="Enter the quantity of items"
-                                        {...field}
-                                    />
+                                    <div className='flex'>
+                                        <Button type='button' size={"icon"} variant={'ghost'} onClick={handleDecrement}><Minus size={18} /></Button>
+                                        <Input
+                                            disabled={isLoading}
+                                            className="bg-zinc-200/50 border-0 text-center dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                            placeholder="Enter the quantity of items"
+                                            {...field}
+                                        />
+                                        <Button type='button' size={"icon"} variant={'ghost'} onClick={handleIncrement}><Plus size={18} /></Button>
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button type='button' size={"icon"} variant={'ghost'} onClick={handleIncrement}><Plus size={18} /></Button>
                 </div>
-
                 <FormField
                     control={form.control}
                     name="productDetails.category"
@@ -152,6 +149,7 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                         </FormItem>
                     )}
                 />
+
             </div>
 
             <div className='grid grid-cols-5 items-center justify-items-center'>
@@ -224,12 +222,15 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                     )}
                 />
             </div>
+
             <div className="flex items-center space-x-2">
                 <Checkbox id="fragile_items" />
                 <Label htmlFor="fragile_items">My shipment contains fragile items.</Label>
             </div>
+
             <Separator orientation='horizontal' />
-            <div className='grid grid-cols-2 gap-3'>
+
+            <div className='grid grid-cols-2 gap-5'>
                 <FormField
                     control={form.control}
                     name="order_invoice_number"
@@ -360,7 +361,11 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                 }
 
             </div>
-            <Button type='submit'>Submit</Button>
+
+            <div className='flex flex-row-reverse '>
+                <Button type='submit' variant={'themeButton'} >Create Shipment</Button>
+                <Button variant={'secondary'}>Reset</Button>
+            </div>
         </CardContent>
 
     )

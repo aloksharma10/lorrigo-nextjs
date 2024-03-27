@@ -2,28 +2,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useEffect, useState } from 'react';
-import { useForm, useWatch } from "react-hook-form";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import { Separator } from '../ui/separator';
-import { Button } from '../ui/button';
-import { CalendarIcon, Check, Equal, Minus, Plus } from 'lucide-react';
-import { Checkbox } from '../ui/checkbox';
-import { Label } from '../ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { Calendar } from '../ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useForm } from "react-hook-form";
+import { Form } from '../ui/form';
+
 import {
     Card,
-    CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
 import { OrderDetailForm } from './b2c-order-form';
+import { DeliveryDetailsForm } from './delivery-details-form';
+import { MapPin } from 'lucide-react';
 
 // Define the schema for customer details
 const customerDetailsSchema = z.object({
@@ -177,12 +168,12 @@ export const B2CForm = () => {
                     </Card>
                     <Card >
                         <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
+                            <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Delivery status</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <p>Card Content</p>
-                        </CardContent>
+                        <DeliveryDetailsForm
+                            form={form}
+                            isLoading={isLoading}
+                        />
                         <CardFooter>
                             <p>Card Footer</p>
                         </CardFooter>
