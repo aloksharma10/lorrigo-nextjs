@@ -135,7 +135,7 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                             <FormLabel
                                 className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                             >
-                                <div className='flex justify-between'>HSN Code <span>Optional</span></div>
+                                <div className='flex justify-between'>HSN Code <span className='opacity-60'  >Optional</span></div>
                             </FormLabel>
                             <FormControl>
                                 <Input
@@ -224,8 +224,25 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
             </div>
 
             <div className="flex items-center space-x-2">
-                <Checkbox id="fragile_items" />
-                <Label htmlFor="fragile_items">My shipment contains fragile items.</Label>
+                <FormField
+                    control={form.control}
+                    name="fragile_items"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                            <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                                <FormLabel>
+                                    My shipment contains fragile items.
+                                </FormLabel>
+                            </div>
+                        </FormItem>
+                    )}
+                />
             </div>
 
             <Separator orientation='horizontal' />
@@ -241,7 +258,7 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                             >
                                 <p className='flex justify-between'>
                                     Invoice Number
-                                    <span className='text-xs'>Optional</span>
+                                    <span className='text-xs opacity-60' >Optional</span>
                                 </p>
                             </FormLabel>
                             <FormControl>
@@ -266,7 +283,7 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                             >
                                 <p className='flex justify-between'>
                                     Invoice Date
-                                    <span className='text-xs'>Optional</span>
+                                    <span className='text-xs opacity-60' >Optional</span>
                                 </p>
                             </FormLabel>
                             <Popover>
@@ -360,11 +377,6 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                     )
                 }
 
-            </div>
-
-            <div className='flex flex-row-reverse '>
-                <Button type='submit' variant={'themeButton'} >Create Shipment</Button>
-                <Button variant={'secondary'}>Reset</Button>
             </div>
         </CardContent>
 

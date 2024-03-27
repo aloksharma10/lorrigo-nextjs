@@ -3,10 +3,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Form } from '../ui/form';
+import { Form, FormField } from '../ui/form';
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+} from "@/components/ui/input-otp"
 
 import {
     Card,
+    CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
@@ -14,63 +21,46 @@ import {
 } from "@/components/ui/card"
 import { OrderDetailForm } from './b2c-order-form';
 import { DeliveryDetailsForm } from './delivery-details-form';
-import { MapPin } from 'lucide-react';
+import { MapPin, PackageOpen } from 'lucide-react';
+import { useSellerProvider } from '../providers/SellerProvider';
+import { Button } from '../ui/button';
+import { BoxDetails } from './box-details';
 
-// Define the schema for customer details
-const customerDetailsSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    phone: z.string(),
-    address: z.string(),
-    city: z.string(),
-    pincode: z.string(),
-});
 
 // Define the schema for product details
 const productDetailsSchema = z.object({
-    name: z.string().min(3),
-    category: z.string().min(2),
+    name: z.string().min(1, "Product name is required"),
+    category: z.string().min(1, "Product category is required"),
     hsn_code: z.string().optional(),
-    quantity: z.number().int().positive(),
-    taxRate: z.string().min(1),
-    taxableValue: z.string().min(1),
+    quantity: z.number().int().positive().min(1, "Product quantity is required"),
+    taxRate: z.string().min(1, "Product tax rate is required"),
+    taxableValue: z.string().min(1, "Product taxable value is required"),
 });
 
-// Define the schema for pickup address form
-const pickupAddressFormSchema = z.object({
-    facilityName: z.string(),
-    contactPersonName: z.string(),
-    pickupLocContact: z.string(),
-    email: z.string().email(),
-    address: z.string(),
-    country: z.string(),
-    pincode: z.string(),
-    state: z.string(),
-    city: z.string(),
-});
 
-// Define the main schema for the form data
 export const formDataSchema = z.object({
-    order_reference_id: z.string().min(3),
+    order_reference_id: z.string().min(1, "Order reference id is required"),
     fragile_items: z.boolean().default(false).optional(),
-    payment_mode: z.enum(["COD", "Prepaid"]), // Assuming payment mode is either 0 or 1
-    orderWeight: z.number().min(0).positive(),
+    payment_mode: z.enum(["COD", "Prepaid"], {
+        required_error: "Payment mode is required"
+    }), // Assuming payment mode is either 0 or 1
+    orderWeight: z.string().min(1, "Order weight is required"),
     order_invoice_date: z.date(),
-    order_invoice_number: z.string(),
-    numberOfBoxes: z.number().int().positive().min(1),
-    orderSizeUnit: z.string(),
-    orderBoxHeight: z.number().int().positive(),
-    orderBoxWidth: z.number().int().positive(),
-    orderBoxLength: z.number().int().positive(),
-    amount2Collect: z.string(),
-    customerDetails: customerDetailsSchema,
+    order_invoice_number: z.string().min(1, "Order invoice number is required"),
+    numberOfBoxes: z.number().int().positive().min(1, "Number of boxes is required"),
+    orderSizeUnit: z.string().min(1, "Order size unit is required"),
+    orderBoxHeight: z.string().min(1, "Order box height is required"),
+    orderBoxWidth: z.string().min(1, "Order box width is required"),
+    orderBoxLength: z.string().min(1, "Order box length is required"),
+    amount2Collect: z.string().min(1, "Amount to collect is required"),
     productDetails: productDetailsSchema,
-    pickupAddress: z.string(),
+    pickupAddress: z.string().min(1, "Pickup address is required")
 });
 
 
 export const B2CForm = () => {
-    // const { register, handleSubmit } = useForm();
+    const { sellerCustomerForm } = useSellerProvider();
+
     const [collectableFeild, setCollectableFeild] = useState(false);
     const currentDate = new Date();
     const yesterday = new Date(currentDate);
@@ -80,24 +70,17 @@ export const B2CForm = () => {
         resolver: zodResolver(formDataSchema),
         defaultValues: {
             order_reference_id: "",
+            fragile_items: false,
             payment_mode: "" as "COD" | "Prepaid",
-            orderWeight: 0,
+            orderWeight: "",
             order_invoice_date: currentDate,
             order_invoice_number: "",
             numberOfBoxes: 0,
             orderSizeUnit: "",
-            orderBoxHeight: 0,
-            orderBoxWidth: 0,
-            orderBoxLength: 0,
+            orderBoxHeight: "",
+            orderBoxWidth: "",
+            orderBoxLength: "",
             amount2Collect: "",
-            customerDetails: {
-                name: "",
-                email: "",
-                phone: "",
-                address: "",
-                city: "",
-                pincode: "",
-            },
             productDetails: {
                 name: "",
                 category: "",
@@ -162,22 +145,33 @@ export const B2CForm = () => {
                             handleIncrement={handleIncrement}
                             collectableFeild={collectableFeild}
                         />
-                        <CardFooter>
-                            <p>Card Footer</p>
+                        <CardFooter className='flex-row-reverse'>
+                            <Button type='submit' variant={'themeButton'} >Create Shipment</Button>
+                            <Button variant={'secondary'} type='button' onClick={() => form.reset()}>Reset</Button>
                         </CardFooter>
                     </Card>
-                    <Card >
-                        <CardHeader>
-                            <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Delivery status</CardTitle>
-                        </CardHeader>
-                        <DeliveryDetailsForm
-                            form={form}
-                            isLoading={isLoading}
-                        />
-                        <CardFooter>
-                            <p>Card Footer</p>
-                        </CardFooter>
-                    </Card>
+                    <div className='space-y-3'>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Delivery status</CardTitle>
+                            </CardHeader>
+                            <DeliveryDetailsForm
+                                form={form}
+                                isLoading={isLoading}
+                            />
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center'><PackageOpen size={23} className='mr-3' />Box Size</CardTitle>
+                            </CardHeader>
+                            <BoxDetails
+                                form={form}
+                                isLoading={isLoading}
+                            />
+                            {/* <CardFooter>
+                            </CardFooter> */}
+                        </Card>
+                    </div>
                 </div>
             </form>
         </Form>

@@ -32,14 +32,13 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const userC = getCookie('user')
         if (userC) {
-            console.log("userC", userC);
             setUserToken(JSON.parse(userC).token);
         }
 
     }, [user]);
 
     const axiosConfig = {
-        baseURL: 'http://localhost:4000',
+        baseURL: 'http://localhost:4000/api',
         timeout: 5000,
         headers: {
             'Content-Type': 'application/json',
@@ -153,7 +152,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             })
             router.push("/login");
         } catch (error) {
-            console.log("error", error);
             toast({
                 variant: "destructive",
                 title: "Something went wrong!",

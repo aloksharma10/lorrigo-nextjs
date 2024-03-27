@@ -1,21 +1,32 @@
 "use client";
 
+import { z } from "zod";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios, { AxiosInstance } from "axios";
+import { customerDetailsSchema } from "@/components/modal/add-customer-modal";
+import { sellerSchema } from "@/components/modal/add-seller-modal";
+
 
 import { useToast } from "@/components/ui/use-toast";
 
-import axios, { AxiosInstance } from "axios";
 import { SellerType } from "@/types/types";
 import { useAuth } from "./AuthProvider";
 
 interface SellerContextType {
   seller: SellerType | null;
   business: string;
-  handlebusinessDropdown: (value: string) => void;
   sellerFacilities: any;
+  handlebusinessDropdown: (value: string) => void;
+  sellerCustomerForm: sellerCustomerFormType;
+  setSellerCustomerForm: React.Dispatch<React.SetStateAction<sellerCustomerFormType>>;
 }
 
+interface sellerCustomerFormType {
+  sellerForm: z.infer<typeof sellerSchema>;
+  customerForm: z.infer<typeof customerDetailsSchema>;
+
+}
 const SellerContext = createContext<SellerContextType | null>(null);
 
 function SellerProvider({ children }: { children: React.ReactNode }) {
@@ -23,13 +34,36 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
   const [seller, setSeller] = useState<SellerType | null>(null);
   const [sellerFacilities, setSellerFacilities] = useState([]);
+
+  const [sellerCustomerForm, setSellerCustomerForm] = useState<sellerCustomerFormType>({
+    sellerForm: {
+      name: "",
+      gstNo: "",
+      isSellerAddressAdded: false,
+      pincode: "",
+      address: "",
+      phone: "",
+      city: "",
+      state: "",
+    },
+    customerForm: {
+      name: "",
+      phone: "",
+      state: "",
+      country: "",
+      address1: "",
+      address2: "",
+      city: "",
+      pincode: "",
+    }
+  });
   const [business, setbusiness] = useState<string>("B2C");
 
   const { toast } = useToast();
   const router = useRouter()
 
   const axiosConfig = {
-    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000',
+    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
@@ -39,31 +73,29 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
   const axiosIWAuth: AxiosInstance = axios.create(axiosConfig);
 
+  useEffect(() => {
+    axiosIWAuth.get('/hub').then((res) => {
+      if (res.data?.valid) {
+        setSellerFacilities(res.data.hubs);
+      }
+    }).catch((err) => { });
+  }, [userToken]);
+
   const handlebusinessDropdown = (value: string) => {
     setbusiness(value);
   }
-  const getSellerFacilities = useCallback(async () => {
-    try {
-      const response = await axiosIWAuth.get('/hub');
-      setSellerFacilities(response.data.hubs) ;
-    } catch (error) {
-      console.error(error);
-    }
-  },[axiosIWAuth])
- 
-  
 
-  useEffect(() => {
-    getSellerFacilities();
-  }, [seller]);
+
 
   return (
     <SellerContext.Provider
       value={{
         seller,
         business,
+        sellerFacilities,
         handlebusinessDropdown,
-        sellerFacilities
+        sellerCustomerForm,
+        setSellerCustomerForm
 
       }}
     >

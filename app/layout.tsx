@@ -1,13 +1,16 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Sans_Condensed } from "next/font/google";
 
 import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/components/providers/AuthProvider";
 import { ModalProvider } from "@/components/providers/ModalProvider";
 import SellerProvider from "@/components/providers/SellerProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = IBM_Plex_Sans_Condensed({
+  subsets: ["cyrillic-ext"],
+  weight: "500"
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",

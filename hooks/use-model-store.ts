@@ -4,6 +4,7 @@ import { create } from "zustand";
 
 export type ModalType = "wallet" | "addPickupLocation" | "addSeller" | "addCustomer" | "schedulePickup";
 interface ModalData {
+  form?: any;
   customer?: CustomerDetailsType;
   order?: B2COrderType;
   seller?: SellerType;

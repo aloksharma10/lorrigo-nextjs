@@ -23,23 +23,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-model-store";
 import { formatCurrencyForIndia } from '@/lib/utils';
-import { useState } from 'react';
 
 const schema = z.object({
     rechargeAmount: z.number().int().min(500).max(10000)
 });
-
-interface RechargeForm {
-    rechargeAmount: number;
-}
-
-interface RechargeAmountOptionProps {
-    amount: number;
-}
-
 
 export const RechargeModal = () => {
     const { isOpen, onClose, type, data } = useModal();

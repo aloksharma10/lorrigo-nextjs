@@ -110,7 +110,7 @@ export const DataAnalysis = () => {
                         <CardContent className="flex items-center justify-between gap-1 w-full">
                             <div className="flex flex-col justify-center shadow-md pb-2 items-center px-3">
                                 <span className="p-3">00</span>
-                                <Label>Toatal NRD</Label>
+                                <Label>Total NRD</Label>
                             </div>
                             <div className="flex flex-col justify-center shadow-md pb-2 items-center px-3">
                                 <span className="p-3">00</span>

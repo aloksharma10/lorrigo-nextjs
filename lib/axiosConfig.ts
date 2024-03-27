@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import axios, { AxiosInstance } from 'axios';
 
-const BASEURL = process.env.BACKEND_API_URL || 'http://localhost:4000';
+const BASEURL = process.env.BACKEND_API_URL || 'http://localhost:4000/api';
 
 const cookieStore = cookies();
 const userCookie = cookieStore.get('user');
