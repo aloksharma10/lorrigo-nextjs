@@ -21,6 +21,7 @@ interface SellerContextType {
   sellerCustomerForm: sellerCustomerFormType;
   setSellerCustomerForm: React.Dispatch<React.SetStateAction<sellerCustomerFormType>>;
   getHub: () => void;
+  handleCreateOrder: (order: any) => boolean | Promise<boolean>;
 }
 
 interface sellerCustomerFormType {
@@ -64,7 +65,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   const axiosConfig = {
-    baseURL: process.env.BACKEND_API_URL || 'http://3.27.246.35:4000/api',
+    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
@@ -98,62 +99,79 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const handleCreateOrder = useCallback(async (order: any) => {
     try {
 
-      /*
-       let data = {
-      order_reference_id: order_reference_id,
-      //  total_order_value: total_order_value,
-      payment_mode: payment_mode === "COD" ? 1 : 0,
-      orderWeight: orderWeight,
-      orderWeightUnit: orderWeightUnit,
-      order_invoice_date: order_invoice_date,
-      order_invoice_number: order_invoice_number,
-      numberOfBoxes: noOfBox,
-      orderSizeUnit: orderSizeUnit,
-      orderBoxHeight: orderBoxHeight,
-      orderBoxWidth: orderBoxWidth,
-      orderBoxLength: orderBoxLength,
-      amount2Collect: productDetails.amount2Collect,
-      customerDetails: {
-        name: customerDetails?.name,
-        email: customerDetails?.email,
-        phone: customerDetails?.phone,
-        address: customerDetails?.address,
-        city: customerDetails?.city,
-        pincode: Number(customerDetails?.pincode),
-      },
-      productDetails: {
-        name: productDetails?.name,
-        category: productDetails?.category,
-        hsn_code: productDetails?.hsn_code,
-        quantity: productDetails?.quantity,
-        taxRate: productDetails?.taxRate,
-        taxableValue: productDetails?.taxableValue,
-      },
-      pickupAddress: pickupAddress,
-    };
-    
-     */
+      if (!sellerCustomerForm.customerForm.name.length) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Customer details are required",
+        });
+        return false
+      }
+      console.log(order, "order", sellerCustomerForm);
+
 
       const payload = {
-
-
+        order_reference_id: order.order_reference_id,
+        payment_mode: order.payment_mode === "COD" ? 1 : 0,
+        orderWeight: Number(order.orderWeight),
+        orderWeightUnit: order.orderSizeUnit,
+        order_invoice_date: order.order_invoice_date,
+        order_invoice_number: order.order_invoice_number,
+        numberOfBoxes: Number(order.numberOfBoxes),
+        orderSizeUnit: order.orderSizeUnit,
+        orderBoxHeight: Number(order.orderBoxHeight),
+        orderBoxWidth: Number(order.orderBoxWidth),
+        orderBoxLength: Number(order.orderBoxLength),
+        amount2Collect: Number(order.amount2Collect),
+        customerDetails: {
+          name: sellerCustomerForm.customerForm.name,
+          phone: sellerCustomerForm.customerForm.phone,
+          address: sellerCustomerForm.customerForm.address1,
+          city: sellerCustomerForm.customerForm.city,
+          pincode: Number(sellerCustomerForm.customerForm.pincode),
+          country: sellerCustomerForm.customerForm.country,
+          state: sellerCustomerForm.customerForm.state,
+        },
+        productDetails: {
+          name: order.productDetails.name,
+          category: order.productDetails.category,
+          hsn_code: order.productDetails.hsn_code,
+          quantity: Number(order.productDetails.quantity),
+          taxRate: order.productDetails.taxRate,
+          taxableValue: order.productDetails.taxableValue,
+        },
+        pickupAddress: order.pickupAddress,
       }
-      const res = await axiosIWAuth.post('/order', order);
-      toast({
-        variant: "default",
-        title: "Order created successfully",
-        description: "Order has been created successfully",
-      });
-      router.refresh()
+
+      const res = await axiosIWAuth.post('/order/b2c', payload);
+      if (res.data?.valid) {
+        toast({
+          variant: "default",
+          title: "Order created successfully",
+          description: "Order has been created successfully",
+        });
+        router.refresh()
+        return true;
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: res.data.message,
+        });
+        return false
+      }
+
+
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "error.response.data.message",
       });
+      return false
 
     }
-  }, [axiosIWAuth, router, toast])
+  }, [axiosIWAuth, router, sellerCustomerForm, toast])
 
   return (
     <SellerContext.Provider
@@ -165,6 +183,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         sellerCustomerForm,
         setSellerCustomerForm,
         getHub,
+        handleCreateOrder
 
       }}
     >

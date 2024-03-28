@@ -61,7 +61,7 @@ export const formDataSchema = z.object({
 
 
 export const B2CForm = () => {
-    const { sellerCustomerForm } = useSellerProvider();
+    const { handleCreateOrder } = useSellerProvider();
 
     const [collectableFeild, setCollectableFeild] = useState(false);
     const currentDate = new Date();
@@ -123,12 +123,10 @@ export const B2CForm = () => {
 
 
     const onSubmit = async (values: z.infer<typeof formDataSchema>) => {
-        console.log(form.formState.errors);
         try {
-            console.log(values);
-            // await createChannel(values, String(params?.serverId));
-
-            form.reset();
+            const isSuccess =await handleCreateOrder(values)
+            console.log(isSuccess, "isSuccess")
+            if (isSuccess==true) form.reset();
         } catch (error) {
             console.log(error);
         }
