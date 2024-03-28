@@ -63,7 +63,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   const axiosConfig = {
-    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
+    baseURL: process.env.BACKEND_API_URL || 'http://3.27.246.35:4000/api',
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
@@ -114,10 +114,14 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
       },
       pickupAddress: pickupAddress,
     };
+
+
+
+    
      */
 
     const payload = {
-      
+
     }
       const res = await axiosIWAuth.post('/order', order);
       toast({

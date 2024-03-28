@@ -26,7 +26,7 @@ export const BoxDetails = ({ form, isLoading }: BoxDetailsProps) => {
 
     return (
         <CardContent className="grid grid-cols-4 gap-3 items-center justify-items-center">
-            <div className="col-span-4">
+            <div className="col-span-4 mb-2">
                 <FormField
                     control={form.control}
                     name="numberOfBoxes"
@@ -159,22 +159,25 @@ export const BoxDetails = ({ form, isLoading }: BoxDetailsProps) => {
                                 Weight
                             </FormLabel>
                             <FormControl>
-                                <Input
-                                    disabled={isLoading}
-                                    className={cn("w-full bg-zinc-200/50 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0",
-                                        isError(field.name) ? "border-red-500 dark:border-red-500" : "border-0 dark:border-0"
-                                    )}
-                                    placeholder="Enter weight"
-                                    {...field}
-                                    onChange={handleChange}
-                                />
+                                <div className="flex gap-3 items-center">
+                                    <Input
+                                        disabled={isLoading}
+                                        className={cn("w-full bg-zinc-200/50 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0",
+                                            isError(field.name) ? "border-red-500 dark:border-red-500" : "border-0 dark:border-0"
+                                        )}
+                                        placeholder="Enter weight"
+                                        {...field}
+                                        onChange={handleChange}
+                                    />
+                                    <Button type='button' variant={"secondary"}>kg</Button>
+                                </div>
+
                             </FormControl>
                             <FormDescription>Package weight should be 0.5kg.</FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type='button' variant={"secondary"}>kg</Button>
             </div>
 
         </CardContent>
