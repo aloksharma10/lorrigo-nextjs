@@ -27,8 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <HubProvider>
-            <SellerProvider>
+          <SellerProvider>
+            <HubProvider>
               <Toaster />
               <ModalProvider />
               <div className="hidden lg:block">
@@ -37,8 +37,8 @@ export default function RootLayout({
               <div className="lg:hidden flex text-center items-center h-full ">
                 <p>The webpage will only be displayed on large devices</p>
               </div>
-            </SellerProvider>
-          </HubProvider>
+            </HubProvider>
+          </SellerProvider>
         </AuthProvider>
       </body>
     </html>

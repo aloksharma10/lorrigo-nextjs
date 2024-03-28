@@ -38,7 +38,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [user]);
 
     const axiosConfig = {
-        baseURL: 'http://3.27.246.35:4000/api',
+        baseURL: 'http://localhost:4000/api',
         timeout: 5000,
         headers: {
             'Content-Type': 'application/json',

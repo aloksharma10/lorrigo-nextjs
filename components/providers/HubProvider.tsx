@@ -6,6 +6,7 @@ import axios, { AxiosInstance } from "axios";
 
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "./AuthProvider";
+import { useSellerProvider } from "./SellerProvider";
 
 interface reqPayload {
     name: string;
@@ -24,13 +25,14 @@ interface HubContextType {
 const HubContext = createContext<HubContextType | null>(null);
 
 function HubProvider({ children }: { children: React.ReactNode }) {
+    const {getHub} = useSellerProvider()
     const { userToken } = useAuth();
 
     const { toast } = useToast();
     const router = useRouter()
 
     const axiosConfig = {
-        baseURL: process.env.BACKEND_API_URL || 'http://3.27.246.35:4000/api',
+        baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
         timeout: 5000,
         headers: {
             'Content-Type': 'application/json',
@@ -48,6 +50,8 @@ function HubProvider({ children }: { children: React.ReactNode }) {
                 title: "Hub created successfully",
                 description: "Hub has been created successfully",
             });
+
+            getHub()
             router.refresh()
         } catch (error) {
             toast({
@@ -57,7 +61,7 @@ function HubProvider({ children }: { children: React.ReactNode }) {
             });
 
         }
-    }, [axiosIWAuth, router, toast])
+    }, [axiosIWAuth, getHub, router, toast])
 
     return (
         <HubContext.Provider

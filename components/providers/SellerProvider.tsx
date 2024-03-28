@@ -20,6 +20,7 @@ interface SellerContextType {
   handlebusinessDropdown: (value: string) => void;
   sellerCustomerForm: sellerCustomerFormType;
   setSellerCustomerForm: React.Dispatch<React.SetStateAction<sellerCustomerFormType>>;
+  getHub: () => void;
 }
 
 interface sellerCustomerFormType {
@@ -63,7 +64,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   const axiosConfig = {
-    baseURL: process.env.BACKEND_API_URL || 'http://3.27.246.35:4000/api',
+    baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
@@ -72,6 +73,22 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   };
 
   const axiosIWAuth: AxiosInstance = axios.create(axiosConfig);
+
+  const getHub = () => {
+    axiosIWAuth.get('/hub')
+      .then((res) => {
+        if (res.data?.valid) {
+          setSellerFacilities(res.data.hubs);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching data:', err);
+      });
+  }
+
+  useEffect(() => {
+    getHub();
+  }, [userToken]);
 
   const handlebusinessDropdown = (value: string) => {
     setbusiness(value);
@@ -114,15 +131,13 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
       },
       pickupAddress: pickupAddress,
     };
-
-
-
     
      */
 
-    const payload = {
+      const payload = {
 
-    }
+
+      }
       const res = await axiosIWAuth.post('/order', order);
       toast({
         variant: "default",
@@ -148,7 +163,8 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         sellerFacilities,
         handlebusinessDropdown,
         sellerCustomerForm,
-        setSellerCustomerForm
+        setSellerCustomerForm,
+        getHub,
 
       }}
     >
