@@ -25,10 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-model-store";
 import { Checkbox } from '../ui/checkbox';
-import { PhoneInput } from '../ui/phone-input';
-import { useSellerProvider } from '../providers/SellerProvider';
 import { useHubProvider } from '../providers/HubProvider';
-import { HubType } from '@/types/types';
 
 export const pickupAddressFormSchema = z.object({
     facilityName: z.string().min(1, "Facility name is required"),
@@ -75,7 +72,6 @@ export const AddPickupLocationModal = () => {
             rtoPincode: "",
         }
     });
-    console.log(form.formState.errors);
 
     const isLoading = form.formState.isSubmitting;
 

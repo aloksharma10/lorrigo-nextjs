@@ -46,13 +46,15 @@ export const formDataSchema = z.object({
     }), // Assuming payment mode is either 0 or 1
     orderWeight: z.string().min(1, "Order weight is required"),
     order_invoice_date: z.date(),
-    order_invoice_number: z.string().min(1, "Order invoice number is required"),
-    numberOfBoxes: z.number().int().positive().min(1, "Number of boxes is required"),
+    order_invoice_number: z.string().optional(),
+    numberOfBoxes: z.enum(["1", "2", "3", "4", "5"], {
+        required_error: "You need to select a notification type.",
+    }),
     orderSizeUnit: z.string().min(1, "Order size unit is required"),
     orderBoxHeight: z.string().min(1, "Order box height is required"),
     orderBoxWidth: z.string().min(1, "Order box width is required"),
     orderBoxLength: z.string().min(1, "Order box length is required"),
-    amount2Collect: z.string().min(1, "Amount to collect is required"),
+    amount2Collect: z.string().optional(),
     productDetails: productDetailsSchema,
     pickupAddress: z.string().min(1, "Pickup address is required")
 });
@@ -75,8 +77,8 @@ export const B2CForm = ({ sellerFacilities }: { sellerFacilities: any }) => {
             orderWeight: "",
             order_invoice_date: currentDate,
             order_invoice_number: "",
-            numberOfBoxes: 0,
-            orderSizeUnit: "",
+            numberOfBoxes: "1" as "1" | "2" | "3" | "4" | "5",
+            orderSizeUnit: "kg",
             orderBoxHeight: "",
             orderBoxWidth: "",
             orderBoxLength: "",
@@ -117,8 +119,11 @@ export const B2CForm = ({ sellerFacilities }: { sellerFacilities: any }) => {
             setValue('productDetails.quantity', currentValue - 1);
         }
     };
+    console.log(form.formState.errors);
+
 
     const onSubmit = async (values: z.infer<typeof formDataSchema>) => {
+        console.log(form.formState.errors);
         try {
             console.log(values);
             // await createChannel(values, String(params?.serverId));

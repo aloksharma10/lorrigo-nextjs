@@ -215,6 +215,11 @@ export const OrderDetailForm = ({ form, isLoading, handleIncrement, handleDecrem
                                     className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                                     placeholder="Enter the total value"
                                     {...field}
+                                    value={
+                                        (Number(form.watch('productDetails.taxableValue')) +
+                                            (Number(form.watch('productDetails.taxRate')) / 100) *
+                                            Number(form.watch('productDetails.taxableValue'))).toFixed(2)
+                                    }
                                 />
                             </FormControl>
                             <FormMessage />

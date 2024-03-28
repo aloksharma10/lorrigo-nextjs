@@ -49,11 +49,15 @@ export const DeliveryDetailsForm = ({ form, isLoading, sellerFacilities }: Deliv
                                         </SelectTrigger>
                                         <SelectContent className="max-h-72">
                                             <SelectSeparator className="h-10 text-center cursor-pointer items-center flex justify-center text-rose-500" onClick={()=>onOpen("addPickupLocation")}><Car size={18} className="mr-3"/>Add Pickup location</SelectSeparator>
-                                            {sellerFacilities.map((facility: any) => (
+                                            {sellerFacilities.length > 0 ? (sellerFacilities.map((facility: any) => (
                                                 <SelectItem key={facility._id} value={facility._id} className="capitalize">
                                                     {facility.name}
                                                 </SelectItem>
-                                            ))}
+                                            ))) : (
+                                                <SelectItem value="noFacility" className="capitalize" disabled={true}>
+                                                    No facility available
+                                                </SelectItem>
+                                            )}
                                         </SelectContent>
                                     </Select>
                                 </FormControl>

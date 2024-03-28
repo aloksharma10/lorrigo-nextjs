@@ -4,11 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useRouter } from "next/navigation";
 import axios, { AxiosInstance } from "axios";
 
-
-
 import { useToast } from "@/components/ui/use-toast";
-
-import { HubType, SellerType } from "@/types/types";
 import { useAuth } from "./AuthProvider";
 
 interface reqPayload {

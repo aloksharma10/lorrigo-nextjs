@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { CardContent } from "../ui/card";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface BoxDetailsProps {
     form: any;
@@ -25,6 +26,61 @@ export const BoxDetails = ({ form, isLoading }: BoxDetailsProps) => {
 
     return (
         <CardContent className="grid grid-cols-4 gap-3 items-center justify-items-center">
+            <div className="col-span-4">
+                <FormField
+                    control={form.control}
+                    name="numberOfBoxes"
+                    render={({ field }) => (
+                        <FormItem className="space-y-3">
+                            <FormLabel>How many box will you ship?</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex space-x-3"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="1" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            1
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="2" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            2
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="3" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">3</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="4" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">4</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="5" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">5</FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+            </div>
             <FormField
                 control={form.control}
                 name="orderBoxLength"
@@ -113,6 +169,7 @@ export const BoxDetails = ({ form, isLoading }: BoxDetailsProps) => {
                                     onChange={handleChange}
                                 />
                             </FormControl>
+                            <FormDescription>Package weight should be 0.5kg.</FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}

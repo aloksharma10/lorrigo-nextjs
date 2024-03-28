@@ -78,6 +78,63 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   }
 
 
+  const handleCreateOrder = useCallback(async (order: any) => {
+    try {
+
+      /*
+       let data = {
+      order_reference_id: order_reference_id,
+      //  total_order_value: total_order_value,
+      payment_mode: payment_mode === "COD" ? 1 : 0,
+      orderWeight: orderWeight,
+      orderWeightUnit: orderWeightUnit,
+      order_invoice_date: order_invoice_date,
+      order_invoice_number: order_invoice_number,
+      numberOfBoxes: noOfBox,
+      orderSizeUnit: orderSizeUnit,
+      orderBoxHeight: orderBoxHeight,
+      orderBoxWidth: orderBoxWidth,
+      orderBoxLength: orderBoxLength,
+      amount2Collect: productDetails.amount2Collect,
+      customerDetails: {
+        name: customerDetails?.name,
+        email: customerDetails?.email,
+        phone: customerDetails?.phone,
+        address: customerDetails?.address,
+        city: customerDetails?.city,
+        pincode: Number(customerDetails?.pincode),
+      },
+      productDetails: {
+        name: productDetails?.name,
+        category: productDetails?.category,
+        hsn_code: productDetails?.hsn_code,
+        quantity: productDetails?.quantity,
+        taxRate: productDetails?.taxRate,
+        taxableValue: productDetails?.taxableValue,
+      },
+      pickupAddress: pickupAddress,
+    };
+     */
+
+    const payload = {
+      
+    }
+      const res = await axiosIWAuth.post('/order', order);
+      toast({
+        variant: "default",
+        title: "Order created successfully",
+        description: "Order has been created successfully",
+      });
+      router.refresh()
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "error.response.data.message",
+      });
+
+    }
+  }, [axiosIWAuth, router, toast])
 
   return (
     <SellerContext.Provider
