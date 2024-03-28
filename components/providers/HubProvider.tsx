@@ -32,7 +32,7 @@ function HubProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter()
 
     const axiosConfig = {
-        baseURL: process.env.BACKEND_API_URL || 'http://localhost:4000/api',
+        baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:4000/api',
         timeout: 5000,
         headers: {
             'Content-Type': 'application/json',
