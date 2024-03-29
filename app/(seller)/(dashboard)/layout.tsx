@@ -1,5 +1,6 @@
 import { DashboardHeader } from "@/components/navigation/Dashboard/dashboard-header";
 import { NavigationItem } from "@/components/navigation/navigation-item";
+import { Suspense } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const DASHBOARD_LINKS = [
@@ -35,7 +36,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return (
         <div className="h-full overflow-hidden">
             <DashboardHeader />
-            <NavigationItem links={DASHBOARD_LINKS} />
+            <Suspense fallback={<span>Loading...</span>}>
+                <NavigationItem links={DASHBOARD_LINKS} />
+            </Suspense>
             {children}
         </div>
     );

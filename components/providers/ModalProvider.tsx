@@ -5,6 +5,7 @@ import { RechargeModal } from "../modal/recharge-modal";
 import { AddCustomerModal } from "../modal/add-customer-modal";
 import { AddSellerModal } from "../modal/add-seller-modal";
 import { AddPickupLocationModal } from "../modal/add-pickup-location";
+// import { SchedulePickupModal } from "../modal/schedule-pickup-modal";
 
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -21,6 +22,7 @@ export const ModalProvider = () => {
         <AddCustomerModal />
         <AddSellerModal />
         <AddPickupLocationModal/>
+        {/* <SchedulePickupModal /> */}
         
       </>
     );

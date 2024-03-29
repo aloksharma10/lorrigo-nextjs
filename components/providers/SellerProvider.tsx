@@ -12,6 +12,8 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { SellerType } from "@/types/types";
 import { useAuth } from "./AuthProvider";
+import { dateFormatter } from "@/lib/utils";
+import { format, parseISO } from "date-fns";
 
 interface SellerContextType {
   seller: SellerType | null;
@@ -22,6 +24,8 @@ interface SellerContextType {
   setSellerCustomerForm: React.Dispatch<React.SetStateAction<sellerCustomerFormType>>;
   getHub: () => void;
   handleCreateOrder: (order: any) => boolean | Promise<boolean>;
+  orders: any[];
+  getAllOrdersByStatus: (status: string) => Promise<any[]>;
 }
 
 interface sellerCustomerFormType {
@@ -36,6 +40,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
   const [seller, setSeller] = useState<SellerType | null>(null);
   const [sellerFacilities, setSellerFacilities] = useState([]);
+  const [orders, setOrders] = useState<any[]>([]);
 
   const [sellerCustomerForm, setSellerCustomerForm] = useState<sellerCustomerFormType>({
     sellerForm: {
@@ -87,8 +92,23 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
       });
   }
 
+  const getAllOrdersByStatus = async (status: string) => {
+    console.log("status", status)
+    let url = status === "all" ? `/order?limit=50&page=1` : `/order?limit=50&page=1&status=${status}`
+    try {
+      const res = await axiosIWAuth.get(url);
+      if (res.data?.valid) {
+        setOrders(res.data.response.orders);
+        return res.data.response.orders
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
   useEffect(() => {
     getHub();
+    getAllOrdersByStatus("all");
   }, [userToken]);
 
   const handlebusinessDropdown = (value: string) => {
@@ -107,8 +127,6 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         });
         return false
       }
-      console.log(order, "order", sellerCustomerForm);
-
 
       const payload = {
         order_reference_id: order.order_reference_id,
@@ -127,10 +145,8 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
           name: sellerCustomerForm.customerForm.name,
           phone: sellerCustomerForm.customerForm.phone,
           address: sellerCustomerForm.customerForm.address1,
-          city: sellerCustomerForm.customerForm.city,
           pincode: Number(sellerCustomerForm.customerForm.pincode),
-          country: sellerCustomerForm.customerForm.country,
-          state: sellerCustomerForm.customerForm.state,
+
         },
         productDetails: {
           name: order.productDetails.name,
@@ -163,6 +179,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
 
     } catch (error) {
+      console.log(error, "error")
       toast({
         variant: "destructive",
         title: "Error",
@@ -183,7 +200,9 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         sellerCustomerForm,
         setSellerCustomerForm,
         getHub,
-        handleCreateOrder
+        handleCreateOrder,
+        orders,
+        getAllOrdersByStatus
 
       }}
     >

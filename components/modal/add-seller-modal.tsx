@@ -274,7 +274,7 @@ export const AddSellerModal = () => {
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            disabled={isLoading}
+                                                            disabled={true}
                                                             className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                                                             placeholder="Enter the country"
                                                             {...field}

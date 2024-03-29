@@ -52,6 +52,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
            * @param {E164Number | undefined} value - The entered value
            */
           onChange={(value) => onChange?.(value || "")}
+
           maxLength={11}
           {...props}
         />
@@ -66,6 +67,7 @@ const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
       className={cn("rounded-s-none rounded-e-lg bg-zinc-300/50", className)}
       {...props}
       ref={ref}
+      maxLength={11}
     />
   ),
 );
@@ -81,7 +83,7 @@ type CountrySelectProps = {
 };
 
 const CountrySelect = ({
-  disabled,
+  disabled=true,
   value,
   onChange,
   options,
