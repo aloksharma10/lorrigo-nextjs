@@ -17,7 +17,7 @@ import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
 
-export const CompanyProfileSchema = z.object({
+export const ChangePasswordSchema = z.object({
     old: z.string().min(1, "Old password is required"),
     new: z.string().min(1, "New password is required"),
     re_new: z.string().min(1, "New password is required"),
@@ -29,7 +29,7 @@ const ChangePasswordForm = () => {
     const router = useRouter();
 
     const form = useForm({
-        resolver: zodResolver(CompanyProfileSchema),
+        resolver: zodResolver(ChangePasswordSchema),
         defaultValues: {
             old: '',
             new: '',
@@ -37,7 +37,7 @@ const ChangePasswordForm = () => {
         }
     });
 
-    const onSubmit = async (values: z.infer<typeof CompanyProfileSchema>) => {
+    const onSubmit = async (values: z.infer<typeof ChangePasswordSchema>) => {
         try {
 
             handleCreateHub({

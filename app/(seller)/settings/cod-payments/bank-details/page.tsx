@@ -6,7 +6,6 @@ const BankDetails = () => {
   return (
     <div>
       <h1 className='py-5 text-2xl font-semibold'>Settings - Bank Details</h1>  
-
       <Card>
         <CardContent className='px-10 py-5'>
           <CardTitle className='py-4 font-semibold'>Bank Account Details</CardTitle>

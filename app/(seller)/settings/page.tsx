@@ -1,13 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
 
 const SettingsCard = ({ title, links }) => (
   <Card className="drop-shadow-md p-1 rounded-2xl">
     <CardContent className='pt-4 h-[187px]'>
       <div className='flex'>
         <div className="mr-3">
-          <img src='/assets/clarity_building-line.png' alt="Building Icon" />
+          <Image src='/assets/clarity_building-line.png' alt="Building Icon" width={30} height={30}/>
         </div>
         <div className='grid place-content-center'>
           <h3 className="font-medium text-lg">{title}</h3>
@@ -18,7 +19,7 @@ const SettingsCard = ({ title, links }) => (
           <Link key={index} href={href}>
             <div className='flex justify-between text-sm'>
               <p>{label}</p>
-              <img src='/assets/arrow.png' alt="Arrow Icon" className='h-3.5'/>
+              <Image src='/assets/arrow.png' alt="Arrow Icon" className='h-3.5' width={10} height={10}/>
             </div>
           </Link>
         ))}
@@ -48,7 +49,7 @@ const Settings = () => {
       title: 'Billing',
       links: [
         { href: '/settings/billing/gstin-invoicing', label: 'GSTIN Invoicing' },
-        { href: '/settings/billing/billing-addresses', label: 'Billing Address' }
+        { href: '/settings/billing/billing-address', label: 'Billing Address' }
       ]
     },
     {

@@ -17,36 +17,42 @@ import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
 
-export const BankDetailsSchema = z.object({
-    holder_name: z.string().min(1, "Account holder's name is required"),
-    acc_type: z.string().min(1, "Account type is required"),
-    acc_number: z.string().min(1, "Account number is required"),
-    ifsc_number: z.string().min(1, "IFSC Number is required"),
+export const BillingAddressSchema = z.object({
+    address_line_1: z.string().min(1, "Address Line 1 is required"),
+    address_line_2: z.string().min(1, "Company ID is required").optional(),
+    pincode: z.string().min(1, "Pincode is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required"),
+    phone: z.string().min(1, "Phone is required")
 })
-const BankDetailsForm = () => {
+const BillingAddressForm = () => {
     const { handleCreateHub } = useHubProvider();
     const { onClose } = useModal();
     const router = useRouter();
 
     const form = useForm({
-        resolver: zodResolver(BankDetailsSchema),
+        resolver: zodResolver(BillingAddressSchema),
         defaultValues: {
-            holder_name: '',
-            acc_type: '',
-            acc_number: '',
-            ifsc_number: ''
+            address_line_1: '',
+            address_line_2: '',
+            pincode: '',
+            city: '',
+            state: '',
+            phone: '',
         }
     });
 
-    const onSubmit = async (values: z.infer<typeof BankDetailsSchema>) => {
+    const onSubmit = async (values: z.infer<typeof BillingAddressSchema>) => {
         try {
 
             handleCreateHub({
-                // @ts-ignore
-                holder_name: values.holder_name,
-                acc_type: values.acc_type,
-                acc_number: values.acc_number,
-                ifsc_number: values.ifsc_number
+                // @ts-ignore  
+                address_line_1: values.address_line_1,
+                address_line_2: values.address_line_2,
+                pincode: values.pincode,
+                city: values.city,
+                state: values.state,
+                phone: values.phone,
             });
 
             form.reset();
@@ -60,63 +66,93 @@ const BankDetailsForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="space-y-5 ">
-                    <div className='grid grid-cols-2 gap-y-6 gap-x-28 py-5 mt-6'>
+                    <FormField
+                        control={form.control}
+                        name={'address_line_1'}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    Address Line 1 <span className='text-red-600'>*</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
+                                        {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name={'address_line_2'}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    Address Line 2
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
+                                        {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )} />
+                    <div className='grid gap-y-6 gap-x-16 py-5 grid-cols-2'>
                         <FormField
                             control={form.control}
-                            name={'holder_name'}
+                            name={'pincode'}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Account holder's name <span className='text-red-600'>*</span>
+                                        Pincode <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
                                             {...field} />
                                     </FormControl>
                                 </FormItem>
                             )} />
                         <FormField
                             control={form.control}
-                            name={'acc_type'}
+                            name={'city'}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Account type<span className='text-red-600'>*</span>
+                                        City <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
                                             {...field} />
                                     </FormControl>
                                 </FormItem>
                             )} />
                         <FormField
                             control={form.control}
-                            name={'acc_number'}
+                            name={'state'}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Account number <span className='text-red-600'>*</span>
+                                        State <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                                             {...field} />
                                     </FormControl>
                                 </FormItem>
                             )} />
                         <FormField
                             control={form.control}
-                            name={'ifsc_number'}
+                            name={'phone'}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        IFSC number <span className='text-red-600'>*</span>
+                                        Phone <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                                             {...field} />
                                     </FormControl>
                                 </FormItem>
@@ -132,4 +168,4 @@ const BankDetailsForm = () => {
     )
 }
 
-export default BankDetailsForm
+export default BillingAddressForm
