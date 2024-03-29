@@ -1,8 +1,10 @@
 'use client'
 import React from 'react'
-import { Form, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Form } from '@/components/ui/form';
+import Image from "next/image";
 
 import {
   FormControl,
@@ -12,7 +14,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
-
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
 
@@ -64,19 +65,19 @@ export const CompanyProfileForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="space-y-5 px-6">
-          <div className='grid grid-cols-2 gap-3 '>
+        <div className="space-y-5 ">
+          <div className='grid grid-cols-2 gap-y-6 gap-x-40 py-5'>
             <FormField
               control={form.control}
               name={'company_id'}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                  <FormLabel className="text-sm font-semibold dark:text-secondary/70">
                     Company ID <span className='text-red-600'>*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                      className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                       {...field} />
                   </FormControl>
                 </FormItem>
@@ -86,12 +87,12 @@ export const CompanyProfileForm = () => {
               name={'name'}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                  <FormLabel className="text-sm font-semibold dark:text-secondary/70">
                     Company Name <span className='text-red-600'>*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                      className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                       {...field} />
                   </FormControl>
                 </FormItem>
@@ -101,12 +102,12 @@ export const CompanyProfileForm = () => {
               name={'website'}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                    Website 
+                  <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                    Website
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                      className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                       {...field} />
                   </FormControl>
                 </FormItem>
@@ -116,12 +117,12 @@ export const CompanyProfileForm = () => {
               name={'email'}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                  <FormLabel className="text-sm font-semibold dark:text-secondary/70">
                     Email <span className='text-red-600'>*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                      className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
                       {...field} />
                   </FormControl>
                 </FormItem>
@@ -131,17 +132,22 @@ export const CompanyProfileForm = () => {
               name={'logo'}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                    Logo 
+                  <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                    Website / Company Logo
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                      {...field} />
+                    <button className='border-2 flex h-[57px] w-[230px] justify-between rounded-lg'>
+                      <div className='grid place-content-center text-red-600 w-full h-full'><p>Upload</p></div>
+                      <div className='bg-[#E6E6E6] h-[55px] w-[55px] grid place-content-center'><Image src={"/assets/material-symbols_upload.png"} width={24} height={24} alt="Logo" /></div>
+                    </button>
                   </FormControl>
                 </FormItem>
               )} />
           </div>
+          <button className='border-2 flex h-[42px] w-[147px] justify-between text-white' type='submit'>
+            <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
+            <div className='bg-red-800 h-[39px] w-[43px] grid place-content-center rounded-r-md'><Image src={"/assets/material-symbols_save.png"} width={20} height={20} alt="Logo" /></div>
+          </button>
         </div>
       </form>
     </Form>
