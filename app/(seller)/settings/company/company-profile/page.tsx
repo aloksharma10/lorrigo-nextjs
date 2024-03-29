@@ -1,3 +1,4 @@
+import { CompanyProfileForm } from '@/components/Settings/company-profile-form'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import React from 'react'
 
@@ -9,18 +10,7 @@ const CompanyProfile = () => {
         <CardContent>
           <CardTitle className='py-4 font-semibold'>Company Details</CardTitle>
           <hr />
-          <form>
-            <div className='grid grid-column-2 py-3'>
-              <div className='grid h-14'>
-                <label className='font-semibold'>Company ID <span className='text-red-700'>*</span></label>
-                <input type='text' className='shadow-md border h-10 my-2' />
-              </div>
-              <div className='grid h-14'>
-                <label className='font-semibold'>Company ID <span className='text-red-700'>*</span></label>
-                <input type='text' className='shadow-md border h-10 my-2' />
-              </div>
-            </div>
-          </form>
+          <CompanyProfileForm />
         </CardContent>
 
       </Card>

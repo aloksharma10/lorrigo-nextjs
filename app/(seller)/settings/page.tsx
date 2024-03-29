@@ -1,70 +1,74 @@
-import { Card, CardContent } from '@/components/ui/card'
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+
+const SettingsCard = ({ title, links }) => (
+  <Card className="drop-shadow-md p-1 rounded-2xl">
+    <CardContent className='pt-4 h-[187px]'>
+      <div className='flex'>
+        <div className="mr-3">
+          <img src='/assets/clarity_building-line.png' alt="Building Icon" />
+        </div>
+        <div className='grid place-content-center'>
+          <h3 className="font-medium text-lg">{title}</h3>
+        </div>
+      </div>
+      <div className="grid mx-12 gap-1 my-3">
+        {links.map(({ href, label }, index) => (
+          <Link key={index} href={href}>
+            <div className='flex justify-between text-sm'>
+              <p>{label}</p>
+              <img src='/assets/arrow.png' alt="Arrow Icon" className='h-3.5'/>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
+
 const Settings = () => {
+  const settingsData = [
+    {
+      title: 'Company',
+      links: [
+        { href: '/settings/company/company-profile', label: 'Company Profile' },
+        { href: '/settings/company/kyc', label: 'KYC' },
+        { href: '/settings/company/change-password', label: 'Change Password' }
+      ]
+    },
+    {
+      title: 'COD Payments',
+      links: [
+        { href: '/settings/cod-payments/bank-details', label: 'Bank Details' },
+        { href: '/settings/cod-payments/postpaid', label: 'Postpaid' }
+      ]
+    },
+    {
+      title: 'Billing',
+      links: [
+        { href: '/settings/billing/gstin-invoicing', label: 'GSTIN Invoicing' },
+        { href: '/settings/billing/billing-addresses', label: 'Billing Address' }
+      ]
+    },
+    {
+      title: 'Pickup Address',
+      links: [
+        { href: '/settings/pickup-address/manage-pickup-addresses', label: 'Manage Pickup Addresses' }
+      ]
+    }
+  ];
+
   return (
     <div>
-      <h1 style={{'fontSize': '25px'}} className='py-5'>Settings</h1>
-      <div className='grid grid-cols-3 gap-14'>
-        <Card className="drop-shadow-md p-1 rounded-2xl">
-          <CardContent className='pt-5 h-187 w-313'>
-            <div className='flex'>
-              <div className="mr-3">
-                <img src='assets/clarity_building-line.png' />
-              </div>
-              <div className='grid place-content-center'><h3 className="font-medium text-lg">Company</h3></div>
-            </div>
-            <div className="grid mx-12 gap-1 my-3">
-              <Link href='/settings/company/company-profile'><div className='flex justify-between' style={{'fontSize': '14px'}}>Company Profile <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-              <Link href='/settings/company/kyc'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>KYC</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-              <Link href='/settings/company/change-password'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>Change Password</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="drop-shadow-md p-1 rounded-2xl">
-          <CardContent className='pt-5 h-187'>
-            <div className='flex'>
-              <div className="mr-3">
-                <img src='assets/clarity_building-line.png' />
-              </div>
-              <div className='grid place-content-center'><h3 className="font-medium text-lg">COD Payments</h3></div>
-            </div>
-            <div className="grid mx-12 gap-1 my-3">
-              <Link href='/settings/cod-payments/bank-details'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>Bank Details</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-              <Link href='/settings/cod-payments/postpaid'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>Postpaid</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>      
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="drop-shadow-md p-1 rounded-2xl">
-          <CardContent className='pt-5 h-187'>
-            <div className='flex'>
-              <div className="mr-3">
-                <img src='assets/clarity_building-line.png' />
-              </div>
-              <div className='grid place-content-center'><h3 className="font-medium text-lg">Billing</h3></div>
-            </div>
-            <div className="grid mx-12 gap-1 my-3">
-              <Link href='/settings/billing/gstin-invoicing'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>GSTIN Invoicing</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-              <Link href='/settings/billing/billing-addresses'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>Billing Address</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="drop-shadow-md p-1 rounded-2xl">
-          <CardContent className='pt-5 h-187' style={{'height': '187px'}}>
-            <div className='flex'>
-              <div className="mr-3">
-                <img src='assets/clarity_building-line.png' />
-              </div>
-              <div className='grid place-content-center'><h3 className="font-medium text-lg">Pickup Address</h3></div>
-            </div>
-            <div className="grid mx-12 gap-1 my-3">
-            <Link href='/settings/pickup-address/manage-pickup-addresses'><div className='flex justify-between' style={{'fontSize': '14px'}}><p>Manage pickup addresses</p> <img src='assets/arrow.png' style={{'height': '15px'}}/></div></Link>
-            </div>
-          </CardContent>
-        </Card>
+      <h1 className='py-5 text-2xl font-normal'>Settings</h1>
+      <div className='grid grid-cols-3 gap-14 pb-5'>
+        {settingsData.map((data, index) => (
+          <SettingsCard key={index} title={data.title} links={data.links} />
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;
