@@ -127,7 +127,6 @@ export const B2CForm = () => {
     const onSubmit = async (values: z.infer<typeof formDataSchema>) => {
         try {
             const isSuccess =await handleCreateOrder(values)
-            console.log(isSuccess, "isSuccess")
             if (isSuccess==true){
                 form.reset();
                 router.push('/orders')

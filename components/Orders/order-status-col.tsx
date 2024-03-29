@@ -1,7 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { B2COrderType } from "@/types/types";
-import { Copy, MoreHorizontal, ShoppingCartIcon } from "lucide-react";
+import { Copy, InfoIcon, MoreHorizontal, ShoppingCartIcon } from "lucide-react";
 import { formatDate } from "date-fns";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import { formatCurrencyForIndia, handleCopyText } from "@/lib/utils";
@@ -13,9 +13,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import { Badge } from "../ui/badge";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
+import { CancelOrderDialog } from "./cancel-order-dialog";
+import ActionTooltip from "../action-tooltip";
+import { OrderButton } from "./order-action-button";
 
 export const columns: ColumnDef<B2COrderType>[] = [
     {
@@ -97,11 +101,12 @@ export const columns: ColumnDef<B2COrderType>[] = [
         accessorKey: 'orderStages',
         cell: ({ row }) => {
             const rowData = row.original;
-            const action = rowData?.orderStages?.slice(-1)[0].action
-            console.log(action)
+            const orderStage = rowData?.orderStages?.slice(-1)[0];
+
             return (
                 <div className="space-y-1">
-                    <Badge variant="success">{action}</Badge>
+                    <Badge variant={orderStage?.stage == -1 ? "failure" : "success"}>{orderStage?.action}
+                    </Badge>
                 </div>
             )
         }
@@ -112,12 +117,9 @@ export const columns: ColumnDef<B2COrderType>[] = [
             const rowData = row.original;
             return (
                 <div className="flex gap-3 items-center">
-                    <Link href={`/orders/${rowData.order_reference_id}`} className={buttonVariants({
-                        variant: "themeButton",
-                        size: "sm",
-                    })}>
-                        Ship Now
-                    </Link>
+                    <OrderButton
+                        rowData={rowData}
+                    />
                     <DropdownMenu>
 
                         <DropdownMenuTrigger asChild>
@@ -130,8 +132,14 @@ export const columns: ColumnDef<B2COrderType>[] = [
                             <DropdownMenuItem>Edit Order</DropdownMenuItem>
                             <DropdownMenuItem>Add Order Tag</DropdownMenuItem>
                             <DropdownMenuItem>Clone Order</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-500">Cancel Order</DropdownMenuItem>
+
+                            {
+                                rowData?.orderStages?.slice(-1)[0]?.stage == 0 || 1 &&
+                                (<>
+                                    <DropdownMenuSeparator />
+                                    <CancelOrderDialog orderId={rowData._id} clientRefId={rowData?.order_reference_id ?? rowData._id} />
+                                </>)
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

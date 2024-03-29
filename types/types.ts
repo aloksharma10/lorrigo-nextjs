@@ -90,7 +90,7 @@ export interface B2COrderType {
         action: string;
         _id?: string;
     }[];
-    pickupAddress?: pickupAddressType;
+    pickupAddress: pickupAddressType;
     productId?: ProductDetailsType;
     order_reference_id?: string;
     payment_mode?: number;
@@ -110,4 +110,18 @@ export interface B2COrderType {
     createdAt?: string;
     updatedAt?: string;
     __v?: number;
+}
+
+export interface OrderType {
+    valid: boolean;
+    orderDetails: B2COrderType;
+    courierPartner: {
+        name: string;
+        minWeight: number;
+        charge: number;
+        type?: string;
+        expectedPickup: string;
+        orderWeight: number;
+        smartship_carrier_id: number;
+    }[];
 }

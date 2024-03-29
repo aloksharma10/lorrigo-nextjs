@@ -10,7 +10,7 @@ import { sellerSchema } from "@/components/modal/add-seller-modal";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { SellerType } from "@/types/types";
+import { OrderType, SellerType } from "@/types/types";
 import { useAuth } from "./AuthProvider";
 import { dateFormatter } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
@@ -26,6 +26,11 @@ interface SellerContextType {
   handleCreateOrder: (order: any) => boolean | Promise<boolean>;
   orders: any[];
   getAllOrdersByStatus: (status: string) => Promise<any[]>;
+  getCourierPartners: (orderId: string) => Promise<any>;
+  courierPartners: OrderType | undefined;
+  handleCreateB2BShipment: ({ orderId, carrierId }: { orderId: string, carrierId: Number }) => boolean | Promise<boolean>;
+  handleCancelOrder: (orderId: string) => boolean | Promise<boolean>;
+  manifestOrder: ({ orderId, scheduleDate }: { orderId: string, scheduleDate: string }) => boolean | Promise<boolean>;
 }
 
 interface sellerCustomerFormType {
@@ -41,6 +46,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const [seller, setSeller] = useState<SellerType | null>(null);
   const [sellerFacilities, setSellerFacilities] = useState([]);
   const [orders, setOrders] = useState<any[]>([]);
+  const [courierPartners, setCourierPartners] = useState<OrderType>();
 
   const [sellerCustomerForm, setSellerCustomerForm] = useState<sellerCustomerFormType>({
     sellerForm: {
@@ -106,6 +112,18 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const getCourierPartners = async (orderId: string) => {
+    try {
+      const res = await axiosIWAuth.get(`/order/courier/b2c/${orderId}`);
+      if (res.data?.valid) {
+        setCourierPartners(res.data);
+        return res.data
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
   useEffect(() => {
     getHub();
     getAllOrdersByStatus("all");
@@ -114,7 +132,6 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
   const handlebusinessDropdown = (value: string) => {
     setbusiness(value);
   }
-
 
   const handleCreateOrder = useCallback(async (order: any) => {
     try {
@@ -132,7 +149,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         order_reference_id: order.order_reference_id,
         payment_mode: order.payment_mode === "COD" ? 1 : 0,
         orderWeight: Number(order.orderWeight),
-        orderWeightUnit: order.orderSizeUnit,
+        orderWeightUnit: "kg",
         order_invoice_date: order.order_invoice_date,
         order_invoice_number: order.order_invoice_number,
         numberOfBoxes: Number(order.numberOfBoxes),
@@ -176,10 +193,7 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         });
         return false
       }
-
-
     } catch (error) {
-      console.log(error, "error")
       toast({
         variant: "destructive",
         title: "Error",
@@ -189,6 +203,104 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
 
     }
   }, [axiosIWAuth, router, sellerCustomerForm, toast])
+
+  const handleCreateB2BShipment = useCallback(async ({ orderId, carrierId }: { orderId: string, carrierId: Number }) => {
+
+    const payload = {
+      orderId: orderId,
+      carrierId: carrierId,
+      orderType: 0
+    }
+    try {
+      const res = await axiosIWAuth.post('/shipment', payload);
+      if (res.data.shipment.response.data.errors === null) {
+        toast({
+          variant: "default",
+          title: "Order created successfully",
+          description: "Order has been created successfully",
+        });
+        router.push('/orders')
+        return true;
+      }
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: res.data.message,
+      });
+      return false
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong",
+      });
+      return false
+
+    }
+  }, [axiosIWAuth, router, toast])
+
+  const handleCancelOrder = async (orderId: string) => {
+    try {
+      const res = await axiosIWAuth.post(`/shipment/cancel`, {
+        orderId: orderId
+      });
+      if (res.data?.valid) {
+        toast({
+          variant: "default",
+          title: "Order",
+          description: "Order cancellation request generated",
+        });
+        getAllOrdersByStatus("all")
+        router.refresh();
+        return true;
+      }
+      toast({
+        variant: "destructive",
+        title: "Order",
+        description: "Order Already cancelled",
+      });
+      return false
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong",
+      });
+      return false
+    }
+  }
+
+  const manifestOrder = async ({ orderId, scheduleDate }: { orderId: string, scheduleDate: string }) => {
+    try {
+      const res = await axiosIWAuth.post(`/shipment/manifest`, {
+        orderId: orderId,
+        pickupDate: scheduleDate
+      });
+      if (res.data?.valid) {
+        toast({
+          variant: "default",
+          title: "Order",
+          description: "Order manifested successfully",
+        });
+        getAllOrdersByStatus("all")
+        router.refresh();
+        return true;
+      }
+      toast({
+        variant: "destructive",
+        title: "Order",
+        description: res.data.message,
+      });
+      return false
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong",
+      });
+      return false
+    }
+  }
 
   return (
     <SellerContext.Provider
@@ -202,7 +314,12 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         getHub,
         handleCreateOrder,
         orders,
-        getAllOrdersByStatus
+        getAllOrdersByStatus,
+        getCourierPartners,
+        courierPartners,
+        handleCreateB2BShipment,
+        handleCancelOrder,
+        manifestOrder
 
       }}
     >
