@@ -18,7 +18,8 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useEffect, useState } from "react";
-import { Circle, MapPin, Square } from "lucide-react";
+import { Circle, MapPin, MapPinIcon, Square } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 
 // Define the schema for product details
@@ -340,14 +341,54 @@ export const RateCalcForm = () => {
                                 <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Pickup Address</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="grid grid-cols-7">
-                                    <div className="space-y-3 items-center flex flex-col max-w-10">
-                                        <Circle strokeWidth={3.4} className="text-yellow-500" size={50} />
-                                        <hr className="w-[1px] bg-black h-full" />
-                                        <Square strokeWidth={3.4} className="text-emerald-600" size={50} />
+                                <div className="grid">
+                                    <div className="space-y-3 items-center flex flex-col ">
+                                        <div className="space-y-3 w-52">
+                                            <div className="flex items-center">
+                                                <MapPin strokeWidth={2.4} className="" size={28} /><span className="text-lg">Pickup Location</span>
+                                            </div>
+                                            <div className="border-red-400 border px-3 py-1 rounded-md w-full text-center">pincode/state</div>
+                                        </div>
+                                        <Separator orientation="vertical" className="w-[2px]" />
+                                        <div className="space-y-3 w-52">
+                                            <div className="flex items-center">
+                                                <MapPin strokeWidth={2.4} className="" size={28} /><span className="text-lg">De Location</span>
+                                            </div>
+                                            <div className="border-red-400 border px-3 py-1 rounded-md w-full text-center">pincode/state</div>
+                                        </div>
                                     </div>
 
-                                  
+                                    <div className="">
+                                        {/* <FormField
+                                            control={form.control}
+                                            name="pickupAddress"
+                                            render={({ field }) => (
+                                                <FormItem className='w-full'>
+                                                    <FormLabel
+                                                        className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                                                    >
+                                                        Select Facility
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            disabled={isLoading}
+                                                            onValueChange={field.onChange}
+
+                                                        >
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select facility" />
+                                                            </SelectTrigger>
+                                                            <SelectContent className="max-h-72">
+
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        /> */}
+
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
