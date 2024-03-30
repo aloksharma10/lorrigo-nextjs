@@ -20,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useEffect, useState } from "react";
 import { Circle, MapPin, MapPinIcon, Square } from "lucide-react";
 import { Separator } from "../ui/separator";
+import { useSellerProvider } from "../providers/SellerProvider";
 
 
 // Define the schema for product details
@@ -40,7 +41,7 @@ const rateCalcSchema = z.object({
 
 
 export const RateCalcForm = () => {
-    // const { handleCreateOrder } = useSellerProvider();
+    const { getCityStateFPincode } = useSellerProvider();
 
     const form = useForm({
         resolver: zodResolver(rateCalcSchema),
@@ -60,6 +61,14 @@ export const RateCalcForm = () => {
     const { setValue } = form
     const isLoading = form.formState.isSubmitting;
     const [collectableFeild, setCollectableFeild] = useState(false);
+    const [pickupCityState, setCityState] = useState({
+        city: "Pincode",
+        state: "state"
+    })
+    const [deliveryCityState, setDeliveryCityState] = useState({
+        city: "Pincode",
+        state: "state"
+    })
 
     const isCOD = form.watch('payment_mode') === "COD";
 
@@ -91,9 +100,40 @@ export const RateCalcForm = () => {
 
 
     const onSubmit = async (values: z.infer<typeof rateCalcSchema>) => {
+        console.log(values)
         form.reset();
-
     }
+
+    
+    useEffect(() => {
+        let timer: string | number | NodeJS.Timeout | undefined;
+        console.log(form.watch("pickupPincode").length > 4)
+
+        const fetchCityState = async () => {
+            if (form.watch("pickupPincode").length > 4) {
+                const cityStateRes = await getCityStateFPincode(form.watch("pickupPincode"))
+
+                setCityState({
+                    city: cityStateRes.city,
+                    state: cityStateRes.state
+                })
+            }
+            if (form.watch("deliveryPincode").length > 4) {
+                const cityStateRes = await getCityStateFPincode(form.watch("deliveryPincode"))
+                setDeliveryCityState({
+                    city: cityStateRes.city,
+                    state: cityStateRes.state
+                })
+            }
+        };
+
+        // Debouncing the function
+        clearTimeout(timer);
+        timer = setTimeout(fetchCityState, 500); // Adjust the delay as per your preference
+
+        return () => clearTimeout(timer);
+    }, [form, getCityStateFPincode, form.watch("pickupPincode"), form.watch("deliveryPincode")])
+
     return (
         <>
 
@@ -126,7 +166,6 @@ export const RateCalcForm = () => {
                                                             )}
                                                             placeholder="Enter pickup pincode"
                                                             {...field}
-                                                            onChange={handleChange}
                                                         />
                                                     </div>
 
@@ -154,7 +193,6 @@ export const RateCalcForm = () => {
                                                             )}
                                                             placeholder="Enter delivery pincode"
                                                             {...field}
-                                                            onChange={handleChange}
                                                         />
                                                     </div>
 
@@ -344,50 +382,18 @@ export const RateCalcForm = () => {
                                 <div className="grid">
                                     <div className="space-y-3 items-center flex flex-col ">
                                         <div className="space-y-3 w-52">
-                                            <div className="flex items-center">
-                                                <MapPin strokeWidth={2.4} className="" size={28} /><span className="text-lg">Pickup Location</span>
+                                            <div className="flex gap-3 items-center">
+                                                <MapPin strokeWidth={2.4} className="" size={23} /><span className="text-lg">Pickup Location</span>
                                             </div>
-                                            <div className="border-red-400 border px-3 py-1 rounded-md w-full text-center">pincode/state</div>
+                                            <div className="border-red-400 border px-3 py-2 rounded-md w-full text-center tracking-wider">{pickupCityState.city}/{pickupCityState.state}</div>
                                         </div>
-                                        <Separator orientation="vertical" className="w-[2px]" />
+                                        <Separator orientation="vertical" className="w-[2px] h-32" />
                                         <div className="space-y-3 w-52">
-                                            <div className="flex items-center">
-                                                <MapPin strokeWidth={2.4} className="" size={28} /><span className="text-lg">De Location</span>
+                                            <div className="gap-3 flex items-center">
+                                                <MapPin strokeWidth={2.4} className="" size={23} /><span className="text-lg">Delivery Location</span>
                                             </div>
-                                            <div className="border-red-400 border px-3 py-1 rounded-md w-full text-center">pincode/state</div>
+                                            <div className="border-red-400 border px-3 py-2 rounded-md w-full text-center tracking-wider">{deliveryCityState.city}/{deliveryCityState.state}</div>
                                         </div>
-                                    </div>
-
-                                    <div className="">
-                                        {/* <FormField
-                                            control={form.control}
-                                            name="pickupAddress"
-                                            render={({ field }) => (
-                                                <FormItem className='w-full'>
-                                                    <FormLabel
-                                                        className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
-                                                    >
-                                                        Select Facility
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Select
-                                                            disabled={isLoading}
-                                                            onValueChange={field.onChange}
-
-                                                        >
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="Select facility" />
-                                                            </SelectTrigger>
-                                                            <SelectContent className="max-h-72">
-
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        /> */}
-
                                     </div>
                                 </div>
                             </CardContent>
@@ -395,7 +401,6 @@ export const RateCalcForm = () => {
                     </div>
                 </form>
             </Form>
-
         </>
     )
 }

@@ -75,7 +75,7 @@ export default function CourierPage() {
                         </div>
                         <div>
                             <p className="text-sm font-semibold">Approximate Weight (kg)</p>
-                            <p className="text-sm">{courierPartners.orderDetails?.orderBoxHeight} {courierPartners.orderDetails?.orderWeightUnit}</p>
+                            <p className="text-sm">{courierPartners.orderDetails?.orderWeight} {courierPartners.orderDetails?.orderWeightUnit}</p>
                         </div>
 
                     </CardContent>

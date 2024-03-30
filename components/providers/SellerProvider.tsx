@@ -29,6 +29,7 @@ interface SellerContextType {
   handleCreateB2BShipment: ({ orderId, carrierId }: { orderId: string, carrierId: Number }) => boolean | Promise<boolean>;
   handleCancelOrder: (orderId: string) => boolean | Promise<boolean>;
   manifestOrder: ({ orderId, scheduleDate }: { orderId: string, scheduleDate: string }) => boolean | Promise<boolean>;
+  getCityStateFPincode: (pincode: string) => Promise<{ city: string, state: string }>;
 }
 
 interface sellerCustomerFormType {
@@ -300,6 +301,22 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const getCityStateFPincode = async (pincode: string): Promise<{ city: string, state: string }> => {
+    try {
+      const res = await axiosIWAuth.post(`/hub/pincode`, {
+        pincode: Number(pincode)
+      });
+      const { city, state, valid } = res.data
+      if (!city || !state) return { city: "City", state: "State" }
+      return { city, state }
+    } catch (error) {
+      // Handle errors
+      console.error('Error while fetching city and state:', error);
+      throw error;
+    }
+  };
+
+
   return (
     <SellerContext.Provider
       value={{
@@ -317,7 +334,8 @@ function SellerProvider({ children }: { children: React.ReactNode }) {
         courierPartners,
         handleCreateB2BShipment,
         handleCancelOrder,
-        manifestOrder
+        manifestOrder,
+        getCityStateFPincode
 
       }}
     >
