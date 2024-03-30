@@ -61,21 +61,47 @@ export interface B2COrderType {
     customerDetails?: CustomerDetailsType;
 }
 
-export interface HubType {
+export interface HubResponseType {
     id?: string;
     hub_id?: number;
     sellerId?: string;
     message?: string;
     code?: number;
     isSuccess?: boolean;
-    hub_details?: {
-        name: string;
-        pincode: number;
-        city: string;
-        state: string;
-        address1: string;
-        address2?: string;
-        phone: number;
-        delivery_type_id?: number;
-    };
+    hub_details?: HubType
+}
+
+export interface HubType {
+    name: string;
+    pincode: number;
+    city: string;
+    state: string;
+    address1: string;
+    address2?: string;
+    phone: number;
+    delivery_type_id?: number;
+};
+
+export interface SettingType {
+    company_id?: string;
+    name?: string;
+    email?: string;
+    website?: string;
+    logo?: string;
+    old?: string;
+    new?: string;
+    re_new?: string;
+    address_line_1?: string;
+    address_line_2?: string;
+    pincode?: string;
+    city?: string;
+    state?: string;
+    phone?: string;
+    holder_name?: string;
+    acc_type?: string;
+    acc_number?: string;
+    ifsc_number?: string; 
+    gstin?: string; 
+    deductTDS?: string; 
+    tan?: string; 
 }

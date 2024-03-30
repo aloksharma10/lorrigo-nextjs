@@ -41,7 +41,6 @@ const ChangePasswordForm = () => {
         try {
 
             handleCreateHub({
-                // @ts-ignore  
                 old: values.old,
                 new: values.new,
                 re_new: values.re_new

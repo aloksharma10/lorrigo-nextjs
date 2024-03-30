@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
+import { Save, Upload } from 'lucide-react';
 
 export const CompanyProfileSchema = z.object({
   company_id: z.string().min(1, "Company ID is required"),
@@ -46,8 +47,7 @@ export const CompanyProfileForm = () => {
     try {
 
       handleCreateHub({
-        // @ts-ignore
-        id: values.company_id,
+        company_id: values.company_id,
         name: values.name,
         email: values.email,
         website: values.website,
@@ -138,15 +138,15 @@ export const CompanyProfileForm = () => {
                   <FormControl>
                     <button className='border-2 flex h-[57px] w-[230px] justify-between rounded-lg'>
                       <div className='grid place-content-center text-red-600 w-full h-full'><p>Upload</p></div>
-                      <div className='bg-[#E6E6E6] h-[55px] w-[55px] grid place-content-center'><Image src={"/assets/material-symbols_upload.png"} width={24} height={24} alt="Logo" /></div>
+                      <div className='bg-[#E6E6E6] h-[55px] w-[55px] grid place-content-center'><Upload size={20} color='red'/></div>
                     </button>
                   </FormControl>
                 </FormItem>
               )} />
           </div>
-          <button className='border-2 flex h-[42px] w-[147px] justify-between text-white' type='submit'>
+          <button className='border-0 flex h-[42px] w-[147px] justify-between text-white' type='submit'>
             <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-            <div className='bg-red-800 h-[39px] w-[43px] grid place-content-center rounded-r-md'><Image src={"/assets/material-symbols_save.png"} width={20} height={20} alt="Logo" /></div>
+            <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
           </button>
         </div>
       </form>

@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
+import { Save } from 'lucide-react';
 
 export const BillingAddressSchema = z.object({
     address_line_1: z.string().min(1, "Address Line 1 is required"),
@@ -46,7 +47,6 @@ const BillingAddressForm = () => {
         try {
 
             handleCreateHub({
-                // @ts-ignore  
                 address_line_1: values.address_line_1,
                 address_line_2: values.address_line_2,
                 pincode: values.pincode,
@@ -157,9 +157,9 @@ const BillingAddressForm = () => {
                                     </FormControl>
                                 </FormItem>
                             )} />
-                        <button className='border-2 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
+                        <button className='border-0 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
                             <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-                            <div className='bg-red-800 h-[39px] w-[43px] grid place-content-center rounded-r-md'><Image src={"/assets/material-symbols_save.png"} width={20} height={20} alt="Logo" /></div>
+                            <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
                         </button>
                     </div>
                 </div>

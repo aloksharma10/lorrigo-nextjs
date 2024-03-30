@@ -50,7 +50,7 @@ const PickupAddresses = () => {
         <div className='flex gap-x-6'>
           <Button variant={'themeGrayBtn'} size={'icon'}><Upload size={18} /></Button>
           <Button variant={'themeGrayBtn'} size={'icon'}><Download size={18} /></Button>
-          <Button variant={'themeButton'} className='rounded-full'>+ Add Pickup Address</Button>
+          <Button variant={'themeButton'} className='rounded-full'><Plus size={14}/> Add Pickup Address</Button>
         </div>
       </div>
       <AddressDetails />

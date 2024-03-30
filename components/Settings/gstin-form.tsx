@@ -16,24 +16,31 @@ import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Save } from 'lucide-react';
 
 export const GstinFormSchema = z.object({
     gstin: z.string().min(1, "Account holder's name is required"),
     tan: z.string().min(1, "Account type is required"),
-    deductTDS: z.enum(["yes", "no"]).default("yes")
+    // deductTDS: z.string(),
 })
 
 const GstinForm = () => {
     const { handleCreateHub } = useHubProvider();
     const { onClose } = useModal();
     const router = useRouter();
+    const [selectedValue, setSelectedValue] = useState('yes');
+
+    const handleChange = (value: React.SetStateAction<string>) => {
+        setSelectedValue(value);
+    };
 
 
     const form = useForm({
         resolver: zodResolver(GstinFormSchema),
         defaultValues: {
             gstin: '',
-            deductTDS: 'yes',
+            // deductTDS: 'yes',
             tan: '',
         }
     });
@@ -42,9 +49,8 @@ const GstinForm = () => {
         try {
 
             handleCreateHub({
-                // @ts-ignore
                 gstin: values.gstin,
-                deductTDS: values.deductTDS,
+                // deductTDS: values.deductTDS,
                 tan: values.tan,
             });
 
@@ -74,7 +80,7 @@ const GstinForm = () => {
                                 </FormControl>
                             </FormItem>
                         )} />
-                    <FormField
+                    {/* <FormField
                         control={form.control}
                         name={'deductTDS'}
                         render={({ field }) => (
@@ -83,11 +89,13 @@ const GstinForm = () => {
                                     I want to deduct TDS payment <span className='text-red-600'>*</span>
                                 </FormLabel>
                                 <FormControl>
-                                    {/* TODO  */}
-                                    {/* radio buttons */}
+                                    <RadioGroup value={field.value} onChange={(value) => field.onChange(value)}>
+                                        <RadioGroupItem value="yes">Yes</RadioGroupItem>
+                                        <RadioGroupItem value="no">No</RadioGroupItem>
+                                    </RadioGroup>
                                 </FormControl>
                             </FormItem>
-                        )} />
+                        )} /> */}
                     <FormField
                         control={form.control}
                         name={'tan'}
@@ -104,9 +112,9 @@ const GstinForm = () => {
                             </FormItem>
                         )} />
                 </div>
-                <button className='border-2 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
+                <button className='bordder-0 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
                     <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-                    <div className='bg-red-800 h-[39px] w-[43px] grid place-content-center rounded-r-md'><Image src={"/assets/material-symbols_save.png"} width={20} height={20} alt="Logo" /></div>
+                    <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
                 </button>
             </form>
         </Form>
