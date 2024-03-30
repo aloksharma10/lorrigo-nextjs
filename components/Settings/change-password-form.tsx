@@ -107,8 +107,8 @@ const ChangePasswordForm = () => {
                             )} />
                     </div>
                     <div className='flex gap-x-12'>
-                        <button className='border-2 h-[42px] w-[130px] grid place-content-center bg-[#505050] w-full h-full text-white rounded-md ' type='button'>Cancel</button>
-                        <button className='border-2 h-[42px] w-[114px] grid place-content-center w-full h-full text-white rounded-md bg-red-700' type='button'>Save</button>
+                        <button className='border-2 h-[42px] w-[130px] grid place-content-center bg-[#505050] text-white rounded-md ' type='button'>Cancel</button>
+                        <button className='border-2 h-[42px] w-[114px] grid place-content-center text-white rounded-md bg-red-700' type='button'>Save</button>
                     </div>
                 </div>
             </form>
