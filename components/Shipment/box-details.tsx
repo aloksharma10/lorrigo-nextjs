@@ -3,13 +3,13 @@ import { Button } from "../ui/button";
 import { CardContent } from "../ui/card";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface BoxDetailsProps {
     form: any;
     isLoading: boolean;
 }
 export const BoxDetails = ({ form, isLoading }: BoxDetailsProps) => {
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let numericValue = e.target.value.replace(/[^0-9.]/g, '');
         const parts = numericValue.split('.');

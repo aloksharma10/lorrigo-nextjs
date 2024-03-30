@@ -5,13 +5,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Form, FormField } from '../ui/form';
 import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-} from "@/components/ui/input-otp"
-
-import {
     Card,
     CardContent,
     CardDescription,
@@ -97,7 +90,7 @@ export const B2CForm = () => {
         }
     });
 
-    const { setValue, getValues } = form
+    const { setValue } = form
     const isLoading = form.formState.isSubmitting;
 
     const isCOD = form.watch('payment_mode') === "COD";
@@ -121,8 +114,6 @@ export const B2CForm = () => {
             setValue('productDetails.quantity', currentValue - 1);
         }
     };
-    console.log(form.formState.errors);
-
 
     const onSubmit = async (values: z.infer<typeof formDataSchema>) => {
         try {
