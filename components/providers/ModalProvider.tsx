@@ -6,6 +6,7 @@ import { AddCustomerModal } from "../modal/add-customer-modal";
 import { AddSellerModal } from "../modal/add-seller-modal";
 import { AddPickupLocationModal } from "../modal/add-pickup-location";
 import { SchedulePickupModal } from "../modal/schedule-pickup-modal";
+import { TrackOrderStatusModal } from "../modal/track-order-status-modal";
 
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -23,6 +24,7 @@ export const ModalProvider = () => {
         <AddSellerModal />
         <AddPickupLocationModal/>
         <SchedulePickupModal />
+        <TrackOrderStatusModal/>
         
       </>
     );

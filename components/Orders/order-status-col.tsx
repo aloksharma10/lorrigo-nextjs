@@ -15,11 +15,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { Badge } from "../ui/badge";
-import { Button, buttonVariants } from "../ui/button";
-import Link from "next/link";
+import { Button } from "../ui/button";
 import { CancelOrderDialog } from "./cancel-order-dialog";
-import ActionTooltip from "../action-tooltip";
 import { OrderButton } from "./order-action-button";
+import { TrackOrder } from "./track-order-button";
 
 export const columns: ColumnDef<B2COrderType>[] = [
     {
@@ -30,12 +29,9 @@ export const columns: ColumnDef<B2COrderType>[] = [
             return (
                 <div className="space-y-1 items-center">
                     <p className="font-medium underline underline-offset-4 text-base text-blue-800 flex items-center">
-                        {
-                            rowData?.awb ?
-                                <Link className="cursor-pointer" href={`/track/${rowData.order_reference_id}`}>{rowData.order_reference_id}</Link>
-                                :
-                                <span>{rowData.order_reference_id}</span>
-                        }
+                        <TrackOrder
+                            order={rowData}
+                        />
                         <Copy className="ml-2 cursor-pointer" size={15} onClick={() => handleCopyText(`${rowData.order_reference_id}`)} /></p>
                     <p>{formatDate(`${rowData?.order_invoice_date}`, 'dd MM yyyy | HH:mm a')}</p>
                     <p className="uppercase flex gap-1"><ShoppingCartIcon size={18} /> Custom</p>

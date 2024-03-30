@@ -12,8 +12,6 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { OrderType, SellerType } from "@/types/types";
 import { useAuth } from "./AuthProvider";
-import { dateFormatter } from "@/lib/utils";
-import { format, parseISO } from "date-fns";
 
 interface SellerContextType {
   seller: SellerType | null;
