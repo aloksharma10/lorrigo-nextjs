@@ -16,6 +16,9 @@ import { Button } from "../ui/button";
 import * as z from 'zod';
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useEffect, useState } from "react";
+import { Circle, MapPin, Square } from "lucide-react";
 
 
 // Define the schema for product details
@@ -27,6 +30,11 @@ const rateCalcSchema = z.object({
     orderBoxWidth: z.string().min(1, "Please enter the width"),
     orderBoxHeight: z.string().min(1, "Please enter the height"),
     orderWeight: z.string().min(1, "Please enter the weight"),
+    payment_mode: z.enum(["COD", "Prepaid"], {
+        required_error: "Payment mode is required"
+    }),
+    collectableAmount: z.string()
+
 });
 
 
@@ -39,24 +47,29 @@ export const RateCalcForm = () => {
             pickupPincode: "",
             deliveryPincode: "",
             weight: "",
+            payment_mode: "" as "COD" | "Prepaid",
             orderBoxLength: "",
             orderBoxWidth: "",
             orderBoxHeight: "",
             orderWeight: "",
+            collectableAmount: ""
         }
     });
 
     const { setValue } = form
     const isLoading = form.formState.isSubmitting;
+    const [collectableFeild, setCollectableFeild] = useState(false);
+
+    const isCOD = form.watch('payment_mode') === "COD";
 
 
-    // useEffect(() => {
-    //     if (isCOD) {
-    //         setCollectableFeild(true);
-    //     } else {
-    //         setCollectableFeild(false);
-    //     }
-    // }, [isCOD]);
+    useEffect(() => {
+        if (isCOD) {
+            setCollectableFeild(true);
+        } else {
+            setCollectableFeild(false);
+        }
+    }, [isCOD]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let numericValue = e.target.value.replace(/[^0-9.]/g, '');
@@ -66,10 +79,12 @@ export const RateCalcForm = () => {
         }
         const field = e.target.name as keyof typeof rateCalcSchema; // Explicitly define the type of 'field'
         console.log(field)
-        // form.setValue(, numericValue);
+        //@ts-ignore
+        form.setValue(field, numericValue);
     };
 
     const isError = (name: string) => {
+        //@ts-ignore
         return form.formState.isSubmitted && form.formState.errors[name] ? true : false;
     };
 
@@ -93,13 +108,13 @@ export const RateCalcForm = () => {
                                 <div className="grid grid-cols-2 gap-10">
                                     <FormField
                                         control={form.control}
-                                        name="orderWeight"
+                                        name="pickupPincode"
                                         render={({ field }) => (
                                             <FormItem className="w-full">
                                                 <FormLabel
                                                     className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                                 >
-                                                   Pickup Pincode
+                                                    Pickup Pincode
                                                 </FormLabel>
                                                 <FormControl>
                                                     <div className="flex gap-3 items-center">
@@ -121,13 +136,13 @@ export const RateCalcForm = () => {
                                     />
                                     <FormField
                                         control={form.control}
-                                        name="orderWeight"
+                                        name="deliveryPincode"
                                         render={({ field }) => (
                                             <FormItem className="w-full">
                                                 <FormLabel
                                                     className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                                 >
-                                                   Delivery Pincode
+                                                    Delivery Pincode
                                                 </FormLabel>
                                                 <FormControl>
                                                     <div className="flex gap-3 items-center">
@@ -253,6 +268,65 @@ export const RateCalcForm = () => {
 
                                 </div>
 
+                                <div className="grid grid-cols-2 gap-10">
+                                    <FormField
+                                        control={form.control}
+                                        name="payment_mode"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel
+                                                    className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                                                >
+                                                    Payment Mode
+                                                </FormLabel>
+                                                <Select
+                                                    disabled={isLoading}
+                                                    onValueChange={field.onChange}
+                                                >
+                                                    <FormControl>
+                                                        <SelectTrigger
+                                                            className="bg-zinc-300/50 dark:bg-zinc-700 dark:text-white border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none"
+                                                        >
+                                                            <SelectValue placeholder="Select a payment mode" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value={"COD"}>Cash on Delivery</SelectItem>
+                                                        <SelectItem value={"Prepaid"}>Prepaid</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    {
+                                        collectableFeild && (
+                                            <FormField
+                                                control={form.control}
+                                                name="collectableAmount"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel
+                                                            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                                                        >
+                                                            Collectable Amount
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                disabled={isLoading}
+                                                                className="bg-zinc-200/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                                placeholder="Enter the amount to collect"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        )
+                                    }
+
+                                </div>
 
 
                             </CardContent>
@@ -260,6 +334,22 @@ export const RateCalcForm = () => {
                                 <Button type='submit' variant={'themeButton'} >Calculate</Button>
                                 <Button variant={'secondary'} type='button'>Reset</Button>
                             </CardFooter>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className='flex items-center'><MapPin className='mr-3' size={20} />Pickup Address</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-7">
+                                    <div className="space-y-3 items-center flex flex-col max-w-10">
+                                        <Circle strokeWidth={3.4} className="text-yellow-500" size={50} />
+                                        <hr className="w-[1px] bg-black h-full" />
+                                        <Square strokeWidth={3.4} className="text-emerald-600" size={50} />
+                                    </div>
+
+                                  
+                                </div>
+                            </CardContent>
                         </Card>
                     </div>
                 </form>
