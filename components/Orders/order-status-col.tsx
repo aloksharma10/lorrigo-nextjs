@@ -32,7 +32,7 @@ export const columns: ColumnDef<B2COrderType>[] = [
                     <p className="font-medium underline underline-offset-4 text-base text-blue-800 flex items-center">
                         {
                             rowData?.awb ?
-                                <Link className="cursor-pointer" href={`/orders/${rowData.order_reference_id}`}>{rowData.order_reference_id}</Link>
+                                <Link className="cursor-pointer" href={`/track/${rowData.order_reference_id}`}>{rowData.order_reference_id}</Link>
                                 :
                                 <span>{rowData.order_reference_id}</span>
                         }
