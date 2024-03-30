@@ -6,6 +6,7 @@ export async function middleware(request: NextRequest) {
 
   const authenticatedRoutes = ['/dashboard', '/new', '/orders', '/settings', '/track', '/rate-calc'];
 
+
   if (!isAuthenticated && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/signup') && !request.nextUrl.pathname.startsWith('/forgot-password')) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
