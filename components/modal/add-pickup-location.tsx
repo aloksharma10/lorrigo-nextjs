@@ -26,12 +26,14 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-model-store";
 import { Checkbox } from '../ui/checkbox';
 import { useHubProvider } from '../providers/HubProvider';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import { PhoneInput } from '../ui/phone-input';
 
 export const pickupAddressFormSchema = z.object({
     facilityName: z.string().min(1, "Facility name is required"),
-    contactPersonName: z.string().min(1, "Contact person name is required"),
-    pickupLocContact: z.string().min(1, "Pickup location contact is required"),
-    email: z.string().email("Invalid email address").optional(),
+    contactPersonName: z.string().optional(),
+    pickupLocContact: z.string().refine(isValidPhoneNumber, { message: "Invalid phone number" }),
+    email: z.string().optional(),
     address: z.string().min(1, "Address is required"),
     country: z.string().min(1, "Country is required"),
     pincode: z.string().min(1, "Pincode is required"),
@@ -145,7 +147,7 @@ export const AddPickupLocationModal = () => {
                                             <Input
                                                 disabled={isLoading}
                                                 className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Enter the GST No."
+                                                placeholder="Enter the contact person name"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -162,10 +164,11 @@ export const AddPickupLocationModal = () => {
                                             Pickup Location Contact
                                         </FormLabel>
                                         <FormControl>
-                                            <Input
+                                            <PhoneInput
                                                 disabled={isLoading}
-                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Enter mobile number"
+                                                className="bg-zinc-300/10 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                defaultCountry='IN'
+                                                placeholder='Enter the contact number'
                                                 {...field}
                                             />
                                         </FormControl>
@@ -216,26 +219,6 @@ export const AddPickupLocationModal = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="city"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                            City
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={isLoading}
-                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Enter the city"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
                                 name="pincode"
                                 render={({ field }) => (
                                     <FormItem>
@@ -247,6 +230,26 @@ export const AddPickupLocationModal = () => {
                                                 disabled={isLoading}
                                                 className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                                                 placeholder="Enter the pincode"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            City
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                                placeholder="Enter the city"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -285,7 +288,7 @@ export const AddPickupLocationModal = () => {
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                disabled={isLoading}
+                                                disabled={true}
                                                 className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                                                 placeholder="Enter the country"
                                                 {...field}
@@ -414,7 +417,7 @@ export const AddPickupLocationModal = () => {
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            disabled={isLoading}
+                                                            disabled={true}
                                                             className="bg-zinc-300/50 border-0 dark:bg-zinc-700 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                                                             placeholder="Enter the country"
                                                             {...field}

@@ -5,13 +5,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Form, FormField } from '../ui/form';
 import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSeparator,
-    InputOTPSlot,
-} from "@/components/ui/input-otp"
-
-import {
     Card,
     CardContent,
     CardDescription,
@@ -25,6 +18,7 @@ import { MapPin, PackageOpen } from 'lucide-react';
 import { useSellerProvider } from '../providers/SellerProvider';
 import { Button } from '../ui/button';
 import { BoxDetails } from './box-details';
+import { useRouter } from 'next/navigation';
 
 
 // Define the schema for product details
@@ -62,6 +56,7 @@ export const formDataSchema = z.object({
 
 export const B2CForm = () => {
     const { handleCreateOrder } = useSellerProvider();
+    const router = useRouter();
 
     const [collectableFeild, setCollectableFeild] = useState(false);
     const currentDate = new Date();
@@ -78,7 +73,7 @@ export const B2CForm = () => {
             order_invoice_date: currentDate,
             order_invoice_number: "",
             numberOfBoxes: "1" as "1" | "2" | "3" | "4" | "5",
-            orderSizeUnit: "kg",
+            orderSizeUnit: "cm",
             orderBoxHeight: "",
             orderBoxWidth: "",
             orderBoxLength: "",
@@ -95,7 +90,7 @@ export const B2CForm = () => {
         }
     });
 
-    const { setValue, getValues } = form
+    const { setValue } = form
     const isLoading = form.formState.isSubmitting;
 
     const isCOD = form.watch('payment_mode') === "COD";
@@ -119,14 +114,14 @@ export const B2CForm = () => {
             setValue('productDetails.quantity', currentValue - 1);
         }
     };
-    console.log(form.formState.errors);
-
 
     const onSubmit = async (values: z.infer<typeof formDataSchema>) => {
         try {
             const isSuccess =await handleCreateOrder(values)
-            console.log(isSuccess, "isSuccess")
-            if (isSuccess==true) form.reset();
+            if (isSuccess==true){
+                form.reset();
+                router.push('/orders')
+            }
         } catch (error) {
             console.log(error);
         }
@@ -150,7 +145,7 @@ export const B2CForm = () => {
                         />
                         <CardFooter className='flex-row-reverse'>
                             <Button type='submit' variant={'themeButton'} >Create Shipment</Button>
-                            <Button variant={'secondary'} type='button' onClick={() => form.reset()}>Reset</Button>
+                            <Button variant={'secondary'} type='button' onClick={() => router.push("/dashboard") }>Go to dashboard</Button>
                         </CardFooter>
                     </Card>
 

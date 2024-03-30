@@ -44,13 +44,13 @@ export const Overview = () => {
               <div className="flex flex-col items-center justify-center">
                 <Image src="/assets/b2c.png" width={50} height={50} alt="B2C" />
                 <h4 className="scroll-m-20 text-base font-medium tracking-tight">
-                  Bulk Order
+                 Create Forward Shipment
                 </h4>
               </div>
             </CardContent>
             <CardFooter className="justify-center">
               <Link href={'/new/b2c'} className={buttonVariants({ variant: "webPageBtn" })}>
-                Explore Now
+               Create Shipment
               </Link>
             </CardFooter>
           </Card>

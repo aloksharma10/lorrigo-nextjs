@@ -22,28 +22,76 @@ export type AuthType = {
 };
 
 
-export interface CustomerDetailsType {
-    id: string;
+export interface HubType {
+    id?: string;
+    hub_id?: number;
+    sellerId?: string;
+    message?: string;
+    code?: number;
+    isSuccess?: boolean;
+    hub_details?: {
+        name: string;
+        pincode: number;
+        city: string;
+        state: string;
+        address1: string;
+        address2?: string;
+        phone: number;
+        delivery_type_id?: number;
+    };
+}
+
+export interface ProductDetailsType {
+    _id: string;
     name: string;
-    email: string;
+    category: string;
+    hsn_code: string;
+    quantity: string;
+    tax_rate: string;
+    taxable_value: string;
+    __v?: number;
+}
+
+export interface CustomerDetailsType {
+    id?: string;
+    name: string;
+    email?: string;
     phone: string;
     address?: string;
     city?: string;
     state?: string;
-    pincode: string;
+    pincode: number;
 }
 
+export interface pickupAddressType {
+    _id: string;
+    sellerId: string;
+    name: string;
+    pincode: number;
+    city: string;
+    state: string;
+    address1: string;
+    address2?: string;
+    phone: number;
+    delivery_type_id?: number;
+    hub_id?: number;
+    __v?: number;
+}
+
+
 export interface B2COrderType {
-    id: string;
+    _id: string;
     awb?: string;
     sellerId: string;
     orderStage?: number;
     orderStages?: {
         stage: number;
-        stageDateTime: Date;
+        stageDateTime: string;
+        action: string;
+        _id?: string;
     }[];
-    pickupAddress?: string;
-    productId?: string;
+    pickupAddress: pickupAddressType;
+    productId?: ProductDetailsType;
     order_reference_id?: string;
     payment_mode?: number;
     order_invoice_date?: string;
@@ -59,7 +107,11 @@ export interface B2COrderType {
     amount2Collect?: number;
     ewaybill?: number;
     customerDetails?: CustomerDetailsType;
+    createdAt?: string;
+    updatedAt?: string;
+    __v?: number;
 }
+
 
 export interface HubResponseType {
     id?: string;
@@ -104,4 +156,17 @@ export interface SettingType {
     gstin?: string; 
     deductTDS?: string; 
     tan?: string; 
+}
+export interface OrderType {
+    valid: boolean;
+    orderDetails: B2COrderType;
+    courierPartner: {
+        name: string;
+        minWeight: number;
+        charge: number;
+        type?: string;
+        expectedPickup: string;
+        orderWeight: number;
+        smartship_carrier_id: number;
+    }[];
 }

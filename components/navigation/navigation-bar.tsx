@@ -19,8 +19,8 @@ export function NavigationBar({ children }: { children: React.ReactNode }) {
 
 
     return (
-        <div className="w-full">
-            <div className="fixed shadow-md w-full bg-white">
+        <div className="w-full z-50">
+            <div className="fixed shadow-md w-full backdrop-blur-sm z-50">
                 <TopNav />
             </div>
             <div

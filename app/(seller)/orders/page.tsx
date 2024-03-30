@@ -1,6 +1,8 @@
+import Orders from "@/components/Orders";
 import { NavigationItem } from "@/components/navigation/navigation-item";
+import { Suspense } from "react";
 
-export default function OrdersPage({ searchParams }: { searchParams: { status: string } }) {
+export default function OrdersPage() {
     const DASHBOARD_LINKS = [
         {
             label: "New",
@@ -34,7 +36,10 @@ export default function OrdersPage({ searchParams }: { searchParams: { status: s
 
     return (
         <>
+            <Suspense fallback={<span>Loading...</span>}>
             <NavigationItem links={DASHBOARD_LINKS} />
+                <Orders />
+            </Suspense>
         </>
     );
 
