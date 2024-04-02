@@ -1,8 +1,6 @@
-import BankDetailsForm from '@/components/Settings/bank-details'
 import GstinForm from '@/components/Settings/gstin-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
-import { Bold } from 'lucide-react'
 import React from 'react'
 const GstinInvoicing = () => {
   return (
@@ -18,13 +16,13 @@ const GstinInvoicing = () => {
             <CardDescription>
               Want to enable state GST?
               <ul className='list-disc mx-4'>
-                <li>When you have multiple GSTIN’s from different state.</li>
+                <li>When you have multiple GSTINs from different state.</li>
                 <li>When you want to generate separate freight invoices for each pickup address.</li>
                 <li>When you want to calm input credit on tax paid by you on your purchase.</li>
               </ul>
             </CardDescription>
           </div>
-          <p className='my-6'>Note: Customer's Invoices will be generated with pickup address</p>
+          <p className='my-6'>Note: Customer&apos;s Invoices will be generated with pickup address</p>
         </CardContent>
       </Card>
     </div>

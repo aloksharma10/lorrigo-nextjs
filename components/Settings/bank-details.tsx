@@ -67,7 +67,7 @@ const BankDetailsForm = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Account holder's name <span className='text-red-600'>*</span>
+                                        Account holder&apos;s name <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input

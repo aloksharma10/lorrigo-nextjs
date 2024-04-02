@@ -2,7 +2,7 @@
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Input } from '../ui/input';
-import { CircleCheck, Download, Plus, SearchIcon, SquarePen, Upload } from 'lucide-react';
+import { ChevronLeft, CircleCheck, Download, Plus, SearchIcon, SquarePen, SwitchCamera, Upload } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const data = {
@@ -17,7 +17,7 @@ const AddressDetails = () => {
       <SquarePen />
       <p>Active</p>
       <p className='text-sm'>Location: <span className='font-semibold'>{data.location}</span></p>
-      <div className='flex gap-x-2 text-md'><CircleCheck color='#C1392B'/> Primary Address</div>
+      <div className='flex gap-x-2 text-md'><CircleCheck color='#C1392B'/> Primary Address </div>
     </div>
   )
 }
@@ -26,7 +26,7 @@ const AddressDetails = () => {
 const PickupAddresses = () => {
   return (
     <div>
-      <div className='flex justify-between mb-4'>
+      <div className='flex justify-between mb-10 mt-4'>
         <div className='flex'>
           <Select>
             <SelectTrigger className='w-[156px]'>
@@ -42,13 +42,13 @@ const PickupAddresses = () => {
               <SelectItem value={'pincode'}>Pincode</SelectItem>
             </SelectContent>
           </Select>
-          <div className='flex border border-gray-300 border rounded-r-md]'>
+          <div className='flex border border-gray-300 rounded-r-md]'>
             <SearchIcon className='mt-1 ml-2' />
             <Input type='text' placeholder='Search by Location name, City, State, Pincode' className='w-[490px] border-0 focus-visible:ring-0 ' />
           </div>
         </div>
         <div className='flex gap-x-6'>
-          <Button variant={'themeGrayBtn'} size={'icon'}><Upload size={18} /></Button>
+          {/* <Button variant={'themeGrayBtn'} size={'icon'}><Upload size={18} /></Button> */}
           <Button variant={'themeGrayBtn'} size={'icon'}><Download size={18} /></Button>
           <Button variant={'themeButton'} className='rounded-full'><Plus size={14}/> Add Pickup Address</Button>
         </div>
