@@ -29,7 +29,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({ title, links, logo }) => (
       <div className="grid mx-12 gap-1 my-3">
         {links.map(({ href, label }, index) => (
           <Link key={index} href={href}>
-            <div className='flex justify-between text-sm'>
+            <div className='flex justify-between text-sm hover:text-gray-500'>
               <p>{label}</p>
               <ChevronRight size={18}/>
             </div>
@@ -78,7 +78,7 @@ const Settings = () => {
 
   return (
     <div>
-      <h1 className='py-5 text-2xl font-normal'>Settings</h1>
+      <h1 className='py-5 text-2xl font-semibold'>Settings</h1>
       <div className='grid grid-cols-3 gap-14 pb-5'>
         {settingsData.map((data, index) => (
           <SettingsCard key={index} title={data.title} links={data.links} logo={data.logo}/>

@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form } from '@/components/ui/form';
+import { Form, FormMessage } from '@/components/ui/form';
 import Image from "next/image";
 
 import {
@@ -17,6 +17,7 @@ import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
 import { Save } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export const BillingAddressSchema = z.object({
     address_line_1: z.string().min(1, "Address Line 1 is required"),
@@ -65,102 +66,112 @@ const BillingAddressForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="space-y-5 ">
+                <div className="grid gap-y-6 gap-x-16 py-5 grid-cols-2">
+                    <div className='col-span-2'>
+                        <FormField
+                            control={form.control}
+                            name={'address_line_1'}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                        Address Line 1 <span className='text-red-600'>*</span>
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm "
+                                            {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                    </div>
+                    <div className='col-span-2'>
+                        <FormField
+                            control={form.control}
+                            name={'address_line_2'}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                        Address Line 2
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
+                                            {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                    </div>
                     <FormField
                         control={form.control}
-                        name={'address_line_1'}
+                        name={'pincode'}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                    Address Line 1 <span className='text-red-600'>*</span>
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                    Pincode <span className='text-red-600'>*</span>
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
+                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm "
                                         {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
                     <FormField
                         control={form.control}
-                        name={'address_line_2'}
+                        name={'city'}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                    Address Line 2
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                    City <span className='text-red-600'>*</span>
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
+                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm "
                                         {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
-                    <div className='grid gap-y-6 gap-x-16 py-5 grid-cols-2'>
-                        <FormField
-                            control={form.control}
-                            name={'pincode'}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Pincode <span className='text-red-600'>*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
-                                            {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )} />
-                        <FormField
-                            control={form.control}
-                            name={'city'}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        City <span className='text-red-600'>*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md "
-                                            {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )} />
-                        <FormField
-                            control={form.control}
-                            name={'state'}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        State <span className='text-red-600'>*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
-                                            {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )} />
-                        <FormField
-                            control={form.control}
-                            name={'phone'}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
-                                        Phone <span className='text-red-600'>*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
-                                            {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )} />
-                        <button className='border-0 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
-                            <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-                            <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
-                        </button>
+                    <FormField
+                        control={form.control}
+                        name={'state'}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                    State <span className='text-red-600'>*</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
+                                        {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name={'phone'}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                    Phone <span className='text-red-600'>*</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
+                                        {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <div className='flex justofy-between gap-x-4'>
+                        <Button variant={'themeButton'} type='submit' className='pr-0'>
+                            Save
+                            <div className='bg-red-800 h-[40px] w-[43px] grid place-content-center rounded-r-md text-white ml-4' ><Save /></div>
+                        </Button>
                     </div>
                 </div>
             </form>

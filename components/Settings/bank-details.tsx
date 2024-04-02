@@ -3,8 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form } from '@/components/ui/form';
-import Image from "next/image";
+import { Form, FormMessage } from '@/components/ui/form';
 
 import {
     FormControl,
@@ -17,6 +16,7 @@ import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
 import { Save } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export const BankDetailsSchema = z.object({
     holder_name: z.string().min(1, "Account holder's name is required"),
@@ -66,14 +66,15 @@ const BankDetailsForm = () => {
                             name={'holder_name'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         Account holder&apos;s name <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )} />
                         <FormField
@@ -81,14 +82,15 @@ const BankDetailsForm = () => {
                             name={'acc_type'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         Account type<span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )} />
                         <FormField
@@ -96,14 +98,15 @@ const BankDetailsForm = () => {
                             name={'acc_number'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         Account number <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )} />
                         <FormField
@@ -111,20 +114,23 @@ const BankDetailsForm = () => {
                             name={'ifsc_number'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         IFSC number <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md"
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )} />
-                        <button className='border-0 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
-                            <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-                            <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
-                        </button>
+                        <div className='flex justofy-between gap-x-4'>
+                            <Button variant={'themeButton'} type='submit' className='pr-0'>
+                                Save
+                                <div className='bg-red-800 h-[40px] w-[43px] grid place-content-center rounded-r-md text-white ml-4' ><Save /></div>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </form>

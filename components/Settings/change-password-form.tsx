@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form } from '@/components/ui/form';
+import { Form, FormMessage } from '@/components/ui/form';
 import Image from "next/image";
 
 import {
@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
 
 export const ChangePasswordSchema = z.object({
     old: z.string().min(1, "Old password is required"),
@@ -63,30 +64,31 @@ const ChangePasswordForm = () => {
                             name={'old'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         Old password <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md w-1/2"
+                                            className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm w-1/2"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage /> 
                                 </FormItem>
                             )} />
-                        <hr />
                         <FormField
                             control={form.control}
                             name={'new'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         New password <span className='text-red-600'>*</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md w-1/2"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm w-1/2"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage /> 
                                 </FormItem>
                             )} />
                         <FormField
@@ -94,20 +96,21 @@ const ChangePasswordForm = () => {
                             name={'re_new'}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                   <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                         Re-Type new password
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md w-1/2"
+                                            className="border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm w-1/2"
                                             {...field} />
                                     </FormControl>
+                                    <FormMessage /> 
                                 </FormItem>
                             )} />
                     </div>
                     <div className='flex gap-x-12'>
-                        <button className='border-2 h-[42px] w-[130px] grid place-content-center bg-[#505050] text-white rounded-md ' type='button'>Cancel</button>
-                        <button className='border-2 h-[42px] w-[114px] grid place-content-center text-white rounded-md bg-red-700' type='button'>Save</button>
+                        <Button variant={'themeGrayBtn'} size={'lg'} >Cancel</Button>
+                        <Button variant={'themeButton'} size={'lg'} >Save</Button>
                     </div>
                 </div>
             </form>

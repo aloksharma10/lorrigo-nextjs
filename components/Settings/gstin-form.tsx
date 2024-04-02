@@ -3,8 +3,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form } from '@/components/ui/form';
-import Image from "next/image";
+import { Form, FormMessage } from '@/components/ui/form';
 
 import {
     FormControl,
@@ -16,13 +15,15 @@ import { Input } from '../ui/input';
 import { useHubProvider } from '../providers/HubProvider';
 import { useModal } from '@/hooks/use-model-store';
 import { useRouter } from 'next/navigation';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Save } from 'lucide-react';
+import { Button } from '../ui/button';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Label } from '../ui/label';
 
 export const GstinFormSchema = z.object({
     gstin: z.string().min(1, "Account holder's name is required"),
     tan: z.string().min(1, "Account type is required"),
-    // deductTDS: z.string(),
+    deductTDS: z.string(),
 })
 
 const GstinForm = () => {
@@ -40,7 +41,7 @@ const GstinForm = () => {
         resolver: zodResolver(GstinFormSchema),
         defaultValues: {
             gstin: '',
-            // deductTDS: 'yes',
+            deductTDS: 'yes',
             tan: '',
         }
     });
@@ -50,7 +51,7 @@ const GstinForm = () => {
 
             handleCreateHub({
                 gstin: values.gstin,
-                // deductTDS: values.deductTDS,
+                deductTDS: values.deductTDS,
                 tan: values.tan,
             });
 
@@ -64,59 +65,71 @@ const GstinForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="space-y-5 ">
+                <div className="space-y-5">
                     <FormField
                         control={form.control}
                         name={'gstin'}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                     GSTIN
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md w-1/2"
+                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm w-1/2"
                                         {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
-                    {/* <FormField
+                    <FormField
                         control={form.control}
                         name={'deductTDS'}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                     I want to deduct TDS payment <span className='text-red-600'>*</span>
                                 </FormLabel>
                                 <FormControl>
-                                    <RadioGroup value={field.value} onChange={(value) => field.onChange(value)}>
-                                        <RadioGroupItem value="yes">Yes</RadioGroupItem>
-                                        <RadioGroupItem value="no">No</RadioGroupItem>
+                                    <RadioGroup defaultValue="yes" className='flex'>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="yes" id="yes" />
+                                            <Label htmlFor="option-one">Yes</Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="no" id="no" />
+                                            <Label htmlFor="option-two">No</Label>
+                                        </div>
                                     </RadioGroup>
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
-                        )} /> */}
+                        )} />
                     <FormField
                         control={form.control}
                         name={'tan'}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-sm font-semibold dark:text-secondary/70">
+                                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                                     TAN Number
                                 </FormLabel>
                                 <FormControl>
                                     <Input
-                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-md w-1/2"
+                                        className=" border-2 dark:text-white focus-visible:ring-0 text-black focus-visible:ring-offset-0 shadow-sm w-1/2"
                                         {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
                 </div>
-                <button className='bordder-0 flex h-[42px] w-[147px] justify-between text-white my-8' type='submit'>
-                    <div className='grid place-content-center bg-red-700 w-full h-full rounded-l-md text-xl'><p>Save</p></div>
-                    <div className='bg-red-800 h-[42px] w-[43px] grid place-content-center rounded-r-md'><Save /></div>
-                </button>
+                <div className='flex justify-between gap-x-4 py-6'>
+                    <Button variant={'themeButton'} type='submit' className='pr-0'>
+                        Save
+                        <div className='bg-red-800 h-[40px] w-[43px] grid place-content-center rounded-r-md text-white ml-4'><Save /></div>
+                    </Button>
+                </div>
             </form>
+            
         </Form>
     )
 }
