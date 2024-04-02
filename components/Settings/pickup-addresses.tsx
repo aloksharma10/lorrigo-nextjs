@@ -44,7 +44,7 @@ const AddressDetails = () => {
       <TableBody>
         {
           data.map((item) => {
-            return <TableRow key={item.address_id} >
+            return <TableRow key={item.address_id} className='grid grid-cols-5'>
               <TableCell>{item.name}</TableCell>
               <TableCell><SquarePen className='text-[#747474] size-4' /></TableCell>
               <TableCell>{item.active ? <ActiveButton /> : <InactiveButton />}</TableCell>
@@ -72,6 +72,14 @@ const AddressDetails = () => {
 
 
 const PickupAddresses = () => {
+  const [page, setPage] = React.useState(1)
+  const totalPages = 5
+  function incrementPage(){
+    setPage(prevPage => Math.min(prevPage + 1, totalPages));
+  }
+  function decrementPage(){
+    setPage(prevPage => Math.max(prevPage - 1, 1));
+  }
   return (
     <div>
       <div className='flex justify-between mb-10 mt-4'>
@@ -90,9 +98,9 @@ const PickupAddresses = () => {
               <SelectItem value={'pincode'}>Pincode</SelectItem>
             </SelectContent>
           </Select>
-          <div className='flex border border-gray-300 rounded-r-md'>
-            <SearchIcon className='mt-1 ml-2' />
-            <input type='text' placeholder='Search by Location name, City, State, Pincode' className='w-full rounded-r-md focus-visible:ring-0 ' />
+          <div className='flex border border-gray-300 rounded-md'>
+            <SearchIcon className='mt-3 mx-2' size={15}/>
+            <input type='text' placeholder='Search by Location name, City, State, Pincode' className='w-[480px] rounded-md focus-visible:ring-0 ' />
           </div>
         </div>
         <div className='flex gap-x-6'>
@@ -117,11 +125,13 @@ const PickupAddresses = () => {
         </Select>
       <p className='grid place-content-center'> items per page</p>
       </div>
-      {/* <div className='flex gap-x-4 justify-center mt-6'>
-        <button className='rounded-full p-1 bg-red-500'><ChevronLeft size={28} color='white' /></button>
-        <p className='grid place-content-center'>1 of 15 Pages</p>
-        <button className='rounded-full p-1 bg-red-500'><ChevronRight size={28} color='white' /></button>
-      </div> */}
+
+      <div className='flex gap-x-4 justify-center mt-6'>
+        <button className='rounded-full p-1 bg-red-500' onClick={decrementPage}><ChevronLeft size={28} color='white' /></button>
+        <p className='grid place-content-center'>{page} of {totalPages} pages</p>
+        <button className='rounded-full p-1 bg-red-500' onClick={incrementPage}><ChevronRight size={28} color='white' /></button>
+      </div>
+      
     </div>
   )
 }
